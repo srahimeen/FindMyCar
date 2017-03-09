@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">FindMyCar</string>
 
@@ -8,4 +9,22 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_first_section">Internal</string>
+    <string name="checktitle1">Offline Storage</string>
+    <string name="default_checkbox_preference">false</string>
+    <string name="checktitle2">Map Directions</string>
+    <string name="title_second_section">Visual</string>
+    <string name="checktitle3">Dark Theme</string>
+    <string name="checktitle4">Garage Info</string>
+    <string name="checktitle5">Map History</string>
+
+    <string-array name="garage_array">
+        <item>Parking Lot A</item>
+        <item>Parking Lot B</item>
+        <item>Parking Lot C</item>
+        <item>Parking Lot 1</item>
+        <item>Parking Lot 2</item>
+        <item>Parking Lot 3</item>
+    </string-array>
+
 </resources>

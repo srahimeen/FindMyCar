@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/title_first_section">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="@string/checktitle1"
+            android:defaultValue="@string/default_checkbox_preference"
+            android:summary="Stores map data offline to internal storage"/>
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="@string/checktitle2"
+            android:defaultValue="@string/default_checkbox_preference"
+            android:summary="Toggles map directions from compass mode"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_second_section">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="@string/checktitle3"
+            android:defaultValue="@string/default_checkbox_preference"
+            android:summary="Toggle app interface to dark color theme"/>
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="@string/checktitle4"
+            android:defaultValue="@string/default_checkbox_preference"
+            android:summary="Toggle garage info view"/>
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="@string/checktitle5"
+            android:defaultValue="@string/default_checkbox_preference"
+            android:summary="Toggle map from details list view to map view"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
