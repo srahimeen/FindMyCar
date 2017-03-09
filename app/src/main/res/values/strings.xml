@@ -27,4 +27,7 @@
         <item>Parking Lot 3</item>
     </string-array>
 
+    <!-- Tag line -->
+    <string name="tag_line">Find My Car</string>
+
 </resources>
