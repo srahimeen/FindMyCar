@@ -32,7 +32,8 @@
         android:padding="4pt"
         android:layout_below="@+id/profile_image"
         android:layout_alignLeft="@+id/profile_image"
-        android:layout_alignStart="@+id/profile_image" />
+        android:layout_alignStart="@+id/profile_image"
+        style="@style/TextShadow"/>
 
 
 
