@@ -36,14 +36,14 @@ import com.google.android.gms.location.LocationListener;
  */
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    GoogleMap mGoogleMap;
-    MapView mMapView;
-    View mView;
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
-    Marker mCurrLocationMarker;
-    LocationRequest mLocationRequest;
-    Context mFragmentContext;
+    private GoogleMap mGoogleMap;
+    private MapView mMapView;
+    private View mView;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private Marker mCurrLocationMarker;
+    private LocationRequest mLocationRequest;
+    private Context mFragmentContext;
 
     public MainFragment() {
         // Required empty public constructor
