@@ -157,6 +157,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        //update userdata
+        currUserData.setUserLatLng(latLng);
+
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
