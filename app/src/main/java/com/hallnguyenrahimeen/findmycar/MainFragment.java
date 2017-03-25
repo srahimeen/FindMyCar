@@ -28,13 +28,19 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapClickListener, OnMapLongClickListener {
 
     private GoogleMap mGoogleMap;
     private MapView mMapView;
@@ -82,6 +88,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        mGoogleMap.setOnMapClickListener(this);
+        mGoogleMap.setOnMapLongClickListener(this);
+
 
         //Test information
         /*
@@ -227,4 +237,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
+
+    // Allows for long press to pin on map, for saving places to go to later far away.
+    @Override
+    public void onMapLongClick(LatLng point) {
+        mGoogleMap.addMarker(new MarkerOptions().position(point).title(point.toString()));
+    }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+    }
 }
