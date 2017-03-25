@@ -1,11 +1,16 @@
 package com.hallnguyenrahimeen.findmycar;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +33,52 @@ public class MainActivity extends AppCompatActivity
     //declared as global so we have access to it
     NavigationView navigationView = null;
     Toolbar toolbar = null;
+
+    public static final int MULTIPLE_PERMISSIONS = 100;
+
+    // function to check permissions
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) + ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) +
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) + ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.INTERNET)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, MULTIPLE_PERMISSIONS); //request the permission
+                }
+
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, MULTIPLE_PERMISSIONS); //request the permission
+                }
+            }
+        } else {
+            // put your function here
+        }
+    }
+
+    // function to request permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MULTIPLE_PERMISSIONS:
+                if (grantResults.length > 0) {
+                    boolean coarseLocationPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeExternalFilePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean fineLoactionPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean internetPermissions = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    if(coarseLocationPermission && writeExternalFilePermission && fineLoactionPermission && internetPermissions)
+                    {
+                        // put your function here
+                    }
+                }
+                else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, MULTIPLE_PERMISSIONS);
+                    }
+                }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +111,9 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //check permissions here
+        checkPermission();
     }
 
     @Override
