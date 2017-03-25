@@ -46,7 +46,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private MapView mMapView;
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    public static Location mLastLocation;
     private Marker mCurrLocationMarker;
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
@@ -151,11 +151,31 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             mCurrLocationMarker.remove();
         }
 
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //moving the map
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
+
+    public void pinLocation(Location location) {
+
+        mLastLocation = location;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+
         //Place current location marker on map
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        markerOptions.title("Saved Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
