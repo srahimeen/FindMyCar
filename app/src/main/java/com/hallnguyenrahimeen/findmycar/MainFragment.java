@@ -51,6 +51,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
+    public  UserData currUserData;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -59,6 +61,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        currUserData = new UserData();
     }
 
     @Override
@@ -178,6 +181,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         markerOptions.title("Saved Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+        //TODO: remove this
+        currUserData.setUserLatLng(latLng);
 
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
