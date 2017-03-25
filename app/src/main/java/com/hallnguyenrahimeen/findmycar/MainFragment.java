@@ -29,11 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import static com.hallnguyenrahimeen.findmycar.R.id.map;
 
@@ -47,7 +43,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private MapView mMapView;
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-    public static Location mLastLocation;
+    public static Location lastLocation;
     private Marker mCurrLocationMarker;
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
@@ -151,7 +147,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onLocationChanged(Location location) {
 
-        mLastLocation = location;
+        lastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
@@ -175,7 +171,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     //Function to place current location marker on map through button press
     public void pinLocation(Location location) {
 
-        mLastLocation = location;
+        lastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }

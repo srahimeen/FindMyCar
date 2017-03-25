@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -27,7 +26,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-import static com.hallnguyenrahimeen.findmycar.MainFragment.mLastLocation;
+import static com.hallnguyenrahimeen.findmycar.MainFragment.lastLocation;
 import static com.hallnguyenrahimeen.findmycar.MainFragment.pinnedLatLng;
 
 public class MainActivity extends AppCompatActivity
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment.pinLocation(mLastLocation);
+                fragment.pinLocation(lastLocation);
                 currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
             }
         });
