@@ -51,8 +51,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private Marker mCurrLocationMarker;
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
+    public static LatLng pinnedLatLng;
 
-    public  UserData currUserData;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -62,7 +63,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        currUserData = new UserData();
+
     }
 
     @Override
@@ -157,8 +158,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        //update userdata
-        currUserData.setUserLatLng(latLng);
+        //update pinned latLng
+        pinnedLatLng = latLng;
 
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

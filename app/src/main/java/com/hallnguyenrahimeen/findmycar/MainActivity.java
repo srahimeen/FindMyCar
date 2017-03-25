@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import static com.hallnguyenrahimeen.findmycar.MainFragment.mLastLocation;
+import static com.hallnguyenrahimeen.findmycar.MainFragment.pinnedLatLng;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private GoogleApiClient mGoogleApiClient;
+    public static UserData currUserData;
 
     public static final int MULTIPLE_PERMISSIONS = 100;
 
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 fragment.pinLocation(mLastLocation);
+                currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
             }
         });
 
@@ -116,6 +119,9 @@ public class MainActivity extends AppCompatActivity
 
         //check permissions here
         checkPermission();
+
+        //create user data instance
+        currUserData = new UserData();
     }
 
     @Override
