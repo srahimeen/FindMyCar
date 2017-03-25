@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static com.hallnguyenrahimeen.findmycar.R.id.map;
 
 
 /**
@@ -78,7 +79,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         super.onViewCreated(view, savedInstanceState);
 
         //Create map view and bind to layout
-        mMapView = (MapView) mView.findViewById(R.id.map);
+        mMapView = (MapView) mView.findViewById(map);
         if(mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
@@ -167,6 +168,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
 
+    //Function to place current location marker on map through button press
     public void pinLocation(Location location) {
 
         mLastLocation = location;
@@ -174,7 +176,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             mCurrLocationMarker.remove();
         }
 
-        //Place current location marker on map
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
@@ -182,12 +183,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-        //TODO: remove this
-        currUserData.setUserLatLng(latLng);
-
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
 
         //stop location updates
         if (mGoogleApiClient != null) {
