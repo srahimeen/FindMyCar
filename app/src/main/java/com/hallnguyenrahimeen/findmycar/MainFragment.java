@@ -51,7 +51,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
-    public static UserData currUserData;
+    public  UserData currUserData;
 
     public MainFragment() {
         // Required empty public constructor
@@ -61,6 +61,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        currUserData = new UserData();
     }
 
     @Override
