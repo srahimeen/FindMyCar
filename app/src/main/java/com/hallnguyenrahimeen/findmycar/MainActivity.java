@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
-    public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers possibly
+    public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
     private boolean mPinned = false;
 
     public static final int MULTIPLE_PERMISSIONS = 100;
