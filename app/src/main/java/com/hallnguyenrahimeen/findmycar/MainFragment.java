@@ -31,6 +31,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 
+import static com.hallnguyenrahimeen.findmycar.MainActivity.currUserData;
 import static com.hallnguyenrahimeen.findmycar.R.id.map;
 
 
@@ -43,12 +44,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private MapView mMapView;
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-    public static Location lastLocation;
     private Marker mCurrLocationMarker;
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
-    public static LatLng pinnedLatLng;
 
+    public static Location lastLocation;
+    public static LatLng pinnedLatLng;
 
 
     public MainFragment() {
@@ -58,8 +59,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-
+        setRetainInstance(true);
     }
 
     @Override
@@ -92,6 +92,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         mGoogleMap.setOnMapClickListener(this);
         mGoogleMap.setOnMapLongClickListener(this);
+
+        if (currUserData.getUserLatLng() != null)
+            drawMarker(currUserData.getUserLatLng());
 
 
         //Test information
@@ -186,11 +189,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
-
-        //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
     }
 
     @Override
@@ -261,7 +259,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-
     // Allows for long press to pin on map, for saving places to go to later far away.
     @Override
     public void onMapLongClick(LatLng point) {
@@ -271,5 +268,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapClick(LatLng point) {
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+    }
+
+
+    // Redraws map markers
+    private void drawMarker(LatLng point) {
+        // Creating an instance of MarkerOptions
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting latitude and longitude for the marker
+        markerOptions.position(point);
+
+        // Adding marker on the Google Map
+        mGoogleMap.addMarker(markerOptions);
     }
 }

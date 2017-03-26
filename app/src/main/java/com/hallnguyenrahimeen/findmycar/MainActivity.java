@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
+    public static UserData[] currUserDataArray = new UserData[50];
 
     public static final int MULTIPLE_PERMISSIONS = 100;
 
