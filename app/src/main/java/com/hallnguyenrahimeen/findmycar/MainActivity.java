@@ -103,8 +103,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment.pinLocation(lastLocation);
-                currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                if (lastLocation != null) { // prevents crash if GPS is left off
+                    fragment.pinLocation(lastLocation);
+                    currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                }
             }
         });
 

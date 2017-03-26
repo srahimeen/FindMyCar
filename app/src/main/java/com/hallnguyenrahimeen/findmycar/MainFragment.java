@@ -48,8 +48,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
-    public static Location lastLocation;
-    public static LatLng pinnedLatLng;
+    public static Location lastLocation = null;
+    public static LatLng pinnedLatLng = null;
 
 
     public MainFragment() {
