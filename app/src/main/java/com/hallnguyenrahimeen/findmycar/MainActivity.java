@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
     public static UserData[] currUserDataArray = new UserData[50];
+    private boolean mPinned = false;
 
     public static final int MULTIPLE_PERMISSIONS = 100;
 
@@ -99,13 +101,18 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (lastLocation != null) { // prevents crash if GPS is left off
+                if (lastLocation != null && !mPinned) { // prevents crash if GPS is left off
                     fragment.pinLocation(lastLocation);
                     currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                    mPinned = true;
+                    fab.setImageResource(R.drawable.ic_fabreturn);
+                } else if (mPinned) {
+                    Snackbar.make(view, "A location has already been pinned.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
