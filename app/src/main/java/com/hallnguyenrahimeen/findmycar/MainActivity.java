@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                     fab.setImageResource(R.drawable.ic_fabreturn);
                 } else if (mPinned) {
                     Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
-                    //TODO: Make function for compass button
+                    //TODO: Make function for compass button, I have been trying this for awhile
                 }
             }
         });
