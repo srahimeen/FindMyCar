@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import static com.hallnguyenrahimeen.findmycar.MainFragment.lastLocation;
 import static com.hallnguyenrahimeen.findmycar.MainFragment.pinnedLatLng;
@@ -98,13 +103,32 @@ public class MainActivity extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //handler for the database
+        final DBHandler db = new DBHandler(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int i = 100;
                 fragment.pinLocation(lastLocation);
                 currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                i=i+1;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                String format = simpleDateFormat.format(new Date());
+                Log.d("MainActivity", "Current Timestamp: " + format);
+                db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.latitude, format));
+
+                //Printing location info
+                Log.d("Reading: ", "Reading all locations..");
+                List<StoredLocation> locations = db.getAllLocations();
+
+                for (StoredLocation location : locations) {
+                    String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
+                            + location.getLng() + " ,Time: " + location.getTime();
+                // Writing locations to log
+                    Log.d("Location: : ", log);
+                }
             }
         });
 
@@ -122,6 +146,17 @@ public class MainActivity extends AppCompatActivity
 
         //create user data instance
         currUserData = new UserData();
+
+        // Printing all locations
+        Log.d("Reading: ", "Reading all shops..");
+        List<StoredLocation> locations = db.getAllLocations();
+
+        for (StoredLocation location : locations) {
+            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
+                    + location.getLng() + " ,Time: " + location.getTime();
+        // Writing locations to log
+            Log.d("Location: : ", log);
+        }
     }
 
     @Override
