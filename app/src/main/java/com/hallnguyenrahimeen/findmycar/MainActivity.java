@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
-    public static UserData[] currUserDataArray = new UserData[50];
+    public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
+    private boolean mPinned = false;
 
     public static final int MULTIPLE_PERMISSIONS = 100;
 
@@ -106,10 +108,11 @@ public class MainActivity extends AppCompatActivity
         //handler for the database
         final DBHandler db = new DBHandler(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int i = 100;
                 fragment.pinLocation(lastLocation);
                 currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
@@ -126,8 +129,19 @@ public class MainActivity extends AppCompatActivity
                 for (StoredLocation location : locations) {
                     String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
                             + location.getLng() + " ,Time: " + location.getTime();
-                // Writing locations to log
+                    // Writing locations to log
                     Log.d("Location: : ", log);
+                }
+
+                if (lastLocation != null && !mPinned) { // prevents crash if GPS is left off
+                    fragment.pinLocation(lastLocation);
+                    currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                    mPinned = true;
+                    fab.setImageResource(R.drawable.ic_fabreturn);
+                } else if (mPinned) {
+                    Snackbar.make(view, "A location has already been pinned.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 }
             }
         });
@@ -154,7 +168,7 @@ public class MainActivity extends AppCompatActivity
         for (StoredLocation location : locations) {
             String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
                     + location.getLng() + " ,Time: " + location.getTime();
-        // Writing locations to log
+            // Writing locations to log
             Log.d("Location: : ", log);
         }
     }

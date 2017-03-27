@@ -27,12 +27,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
 
+    <!--Changed to be on the left side so the map+directions button can be seen-->
+    <!--Allows for a redirect to google maps navigation, which is a lot more polished-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_marginRight"
         app:srcCompat="@drawable/ic_fab" />
 
 </android.support.design.widget.CoordinatorLayout>
