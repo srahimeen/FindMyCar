@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,6 +28,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.hallnguyenrahimeen.findmycar.MainFragment.lastLocation;
 import static com.hallnguyenrahimeen.findmycar.MainFragment.pinnedLatLng;
 
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
     public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
-    private boolean mPinned = false;
+    private boolean mPinned = false; // Checks if pin is placed
+
 
     public static final int MULTIPLE_PERMISSIONS = 100;
 
@@ -111,8 +114,8 @@ public class MainActivity extends AppCompatActivity
                     mPinned = true;
                     fab.setImageResource(R.drawable.ic_fabreturn);
                 } else if (mPinned) {
-                    Snackbar.make(view, "A location has already been pinned.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
+                    //TODO: Make function for compass button
                 }
             }
         });
