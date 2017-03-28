@@ -4,9 +4,12 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +20,13 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//import com.androidopentutorials.sqlite.R;
-//import com.androidopentutorials.sqlite.adapter.EmpListAdapter;
-//import com.androidopentutorials.sqlite.db.EmployeeDAO;
-//import com.androidopentutorials.sqlite.to.Employee;
 
 public class HistoryFragment extends Fragment implements OnItemClickListener,
         OnItemLongClickListener {
 
     public static final String ARG_ITEM_ID = "location_list";
 
+    //final Context context = this;
     Activity activity;
     ListView locationListView;
     ArrayList<StoredLocation> employees;
@@ -91,11 +91,33 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
                                    int position, long arg3) {
-        StoredLocation location = (StoredLocation) parent.getItemAtPosition(position);
+        final StoredLocation location = (StoredLocation) parent.getItemAtPosition(position);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+        builder1.setMessage("Delete location record?.");
+        builder1.setCancelable(true);
 
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        locationHandler.deleteLocation(location);
+                        listAdapter.remove(location);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
         // Use AsyncTask to delete from database
-        locationHandler.deleteLocation(location);
-        listAdapter.remove(location);
+
         return true;
     }
 
