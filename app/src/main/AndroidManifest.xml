@@ -28,6 +28,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+                    android:name=".activities.CompassActivity"
+                    android:theme="@style/AppTheme.NoActionBar"
+                    android:configChanges="orientation|keyboardHidden|screenSize"
+                   />
+
         <!--Maps Android Key-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
