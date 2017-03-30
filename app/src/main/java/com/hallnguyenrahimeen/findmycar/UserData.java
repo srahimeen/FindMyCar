@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar.Database;
+package com.hallnguyenrahimeen.findmycar;
 
 import com.google.android.gms.maps.model.LatLng;
 

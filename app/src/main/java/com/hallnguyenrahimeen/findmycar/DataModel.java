@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar.Database;
+package com.hallnguyenrahimeen.findmycar;
 
 public class DataModel {
 
