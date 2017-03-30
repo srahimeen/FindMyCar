@@ -208,7 +208,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
-                //Prompt the user once explanation has been shown
+                //Prompt the user once explanation has been shown to user
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
