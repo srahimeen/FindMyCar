@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.hallnguyenrahimeen.findmycar.Database.StoredLocation;
+
 //import com.androidopentutorials.sqlite.R;
 //import com.androidopentutorials.sqlite.to.Employee;
 
