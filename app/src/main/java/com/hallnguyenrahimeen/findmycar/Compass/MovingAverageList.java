@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.Compass;
 
 import java.util.ArrayList;
 import java.util.Iterator;
