@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.fragments;
 
 
 import android.content.Context;
@@ -30,8 +30,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.hallnguyenrahimeen.findmycar.R;
 
-import static com.hallnguyenrahimeen.findmycar.MainActivity.currUserData;
+import static com.hallnguyenrahimeen.findmycar.activities.MainActivity.currUserData;
 import static com.hallnguyenrahimeen.findmycar.R.id.map;
 
 

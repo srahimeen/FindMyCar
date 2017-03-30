@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.helpers;
 
 import android.content.Context;
 import android.hardware.GeomagneticField;

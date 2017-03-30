@@ -1,11 +1,10 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.fragments;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +18,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.hallnguyenrahimeen.findmycar.data.DBHandler;
+import com.hallnguyenrahimeen.findmycar.data.ListAdapter;
+import com.hallnguyenrahimeen.findmycar.R;
+import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
 
 
 public class HistoryFragment extends Fragment implements OnItemClickListener,

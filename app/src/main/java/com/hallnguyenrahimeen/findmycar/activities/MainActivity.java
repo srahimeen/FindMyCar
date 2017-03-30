@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -28,14 +27,21 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.hallnguyenrahimeen.findmycar.data.DBHandler;
+import com.hallnguyenrahimeen.findmycar.R;
+import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
+import com.hallnguyenrahimeen.findmycar.data.UserData;
+import com.hallnguyenrahimeen.findmycar.fragments.GarageInfoFragment;
+import com.hallnguyenrahimeen.findmycar.fragments.HistoryFragment;
+import com.hallnguyenrahimeen.findmycar.fragments.MainFragment;
+import com.hallnguyenrahimeen.findmycar.fragments.SettingsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static com.hallnguyenrahimeen.findmycar.MainFragment.lastLocation;
-import static com.hallnguyenrahimeen.findmycar.MainFragment.pinnedLatLng;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLocation;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinnedLatLng;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -116,34 +122,38 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                int i = 100;
-                fragment.pinLocation(lastLocation);
-                currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                i=i+1;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-                String format = simpleDateFormat.format(new Date());
-                Log.d("MainActivity", "Current Timestamp: " + format);
-                db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.latitude, format));
-
-                //Printing location info
-                Log.d("Reading: ", "Reading all locations..");
-                List<StoredLocation> locations = db.getAllLocations();
-
-                for (StoredLocation location : locations) {
-                    String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                            + location.getLng() + " ,Time: " + location.getTime();
-                    // Writing locations to log
-                    Log.d("Location: : ", log);
-                }
-
                 if (lastLocation != null && !mPinned) { // prevents crash if GPS is left off
                     fragment.pinLocation(lastLocation);
                     currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
                     mPinned = true;
                     fab.setImageResource(R.drawable.ic_fabreturn);
+
+                    // Stores pinned location into the database
+                    int i = 100;
+                    fragment.pinLocation(lastLocation);
+                    currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                    i=i+1;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                    String format = simpleDateFormat.format(new Date());
+                    Log.d("MainActivity", "Current Timestamp: " + format);
+                    db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.latitude, format));
+
+                    //Printing location info
+                    Log.d("Reading: ", "Reading all locations..");
+                    List<StoredLocation> locations = db.getAllLocations();
+
+                    for (StoredLocation location : locations) {
+                        String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
+                                + location.getLng() + " ,Time: " + location.getTime();
+                        // Writing locations to log
+                        Log.d("Location: : ", log);
+                    }
                 } else if (mPinned) {
                     Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
                     //TODO: Make function for compass button, I have been trying this for awhile
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"The GPS is not turned on.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

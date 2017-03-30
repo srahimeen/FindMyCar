@@ -1,40 +1,29 @@
-package com.hallnguyenrahimeen.findmycar;
+package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.view.View;
+
+import com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant;
+import com.hallnguyenrahimeen.findmycar.R;
 
 /**
  * Created by tinnn on 3/29/2017.
  */
 
-public class CompassActivity extends Activity implements CompassAssistant.CompassAssistantListener {
+public class CompassActivity extends Activity implements com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
 
     private CompassAssistant CompassAssistant;
     //private float currentDegree;
 
     private SensorManager sensorManager;
-    private Sensor compass;
+    private ImageView compass;
     private ImageView image;
     private TextView compassAngle;
     private float currentDegree = 0f;
