@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hallnguyenrahimeen.findmycar.data.DBHandler;
-import com.hallnguyenrahimeen.findmycar.data.ListAdapter;
+import com.hallnguyenrahimeen.findmycar.adapters.ListAdapter;
 import com.hallnguyenrahimeen.findmycar.R;
 import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
 

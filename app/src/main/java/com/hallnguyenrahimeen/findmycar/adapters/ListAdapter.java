@@ -1,4 +1,4 @@
-package com.hallnguyenrahimeen.findmycar.data;
+package com.hallnguyenrahimeen.findmycar.adapters;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hallnguyenrahimeen.findmycar.R;
+import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
 
 //import com.androidopentutorials.sqlite.R;
 //import com.androidopentutorials.sqlite.to.Employee;
