@@ -33,7 +33,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     //final Context context = this;
     Activity activity;
     ListView locationListView;
-    ArrayList<StoredLocation> employees;
+    ArrayList<StoredLocation> locations;
 
     ListAdapter listAdapter;
     DBHandler locationHandler;
@@ -97,7 +97,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
                                    int position, long arg3) {
         final StoredLocation location = (StoredLocation) parent.getItemAtPosition(position);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-        builder1.setMessage("Delete location record?.");
+        builder1.setMessage("Delete this location record?");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -140,18 +140,18 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         }
 
         @Override
-        protected void onPostExecute(ArrayList<StoredLocation> empList) {
+        protected void onPostExecute(ArrayList<StoredLocation> locList) {
             if (activityWeakRef.get() != null
                     && !activityWeakRef.get().isFinishing()) {
-                Log.d("employees", empList.toString());
-                employees = empList;
-                if (empList != null) {
-                    if (empList.size() != 0) {
+                Log.d("employees", locList.toString());
+                locations = locList;
+                if (locList != null) {
+                    if (locList.size() != 0) {
                         listAdapter = new ListAdapter(activity,
-                                empList);
+                                locList);
                         locationListView.setAdapter(listAdapter);
                     } else {
-                        Toast.makeText(activity, "No Employee Records",
+                        Toast.makeText(activity, "No Recorded Locations",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
