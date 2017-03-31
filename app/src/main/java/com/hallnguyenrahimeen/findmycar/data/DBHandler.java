@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     // Database Name
     private static final String DATABASE_NAME = "carsInfo";
     // Contacts table name
@@ -19,6 +19,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_LAT = "lat";
     private static final String KEY_LNG = "lng";
     private static final String KEY_TIME = "time";
+    private static final String KEY_LOC = "location";
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,7 +28,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_STORED_LOCATION + "("
         + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LAT + " REAL,"
-        + KEY_LNG + " REAL," + KEY_TIME + " TEXT)";
+        + KEY_LNG + " REAL," + KEY_TIME + " TEXT," + KEY_LOC + " TEXT)";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
     @Override
@@ -45,6 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_LAT, location.getLat()); // location lat
         values.put(KEY_LNG, location.getLng()); // location lng
         values.put(KEY_TIME, location.getTime()); // location time
+        values.put(KEY_LOC, location.getLoc()); // location info
 
         // Inserting Row
         db.insert(TABLE_STORED_LOCATION, null, values);
@@ -55,16 +57,16 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_STORED_LOCATION, new String[]{KEY_ID,
-                KEY_LAT, KEY_LNG, KEY_TIME}, KEY_ID + "=?",
+                KEY_LAT, KEY_LNG, KEY_TIME, KEY_LOC}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        //id, lat, lng, time
+        //id, lat, lng, time, location
         StoredLocation contact = new StoredLocation(Integer.parseInt(cursor.getString(0)),
                 Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)),
-                cursor.getString(3));
+                cursor.getString(3), cursor.getString(4));
         // return location
         return contact;
     }
@@ -85,6 +87,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 location.setLat(Double.parseDouble(cursor.getString(1)));
                 location.setLng(Double.parseDouble(cursor.getString(2)));
                 location.setTime(cursor.getString(3));
+                location.setLoc(cursor.getString(4));
                 // Adding contact to list
                 locationList.add(location);
             } while (cursor.moveToNext());

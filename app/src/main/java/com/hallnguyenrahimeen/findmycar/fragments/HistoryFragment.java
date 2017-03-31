@@ -143,7 +143,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         protected void onPostExecute(ArrayList<StoredLocation> locList) {
             if (activityWeakRef.get() != null
                     && !activityWeakRef.get().isFinishing()) {
-                Log.d("employees", locList.toString());
+                Log.d("locations", locList.toString());
                 locations = locList;
                 if (locList != null) {
                     if (locList.size() != 0) {
