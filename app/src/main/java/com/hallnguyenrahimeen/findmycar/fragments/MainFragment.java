@@ -53,6 +53,16 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public static LatLng pinnedLatLng = null;
 
 
+    // Used for compass navigation
+    public static double lastLat = 0.0;
+    public static double lastLon = 0.0;
+    // Coordinates to destination
+    public static double markedLat = 0.0;
+    public static double markedLon = 0.0;
+
+
+
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -157,6 +167,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        lastLat = location.getLatitude();
+        lastLon = location.getLongitude();
 
         //update pinned latLng
         pinnedLatLng = latLng;
@@ -186,6 +198,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         markerOptions.title("Saved Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+        // Storing coordinates for compass navigation
+        markedLat = location.getLatitude();
+        markedLon = location.getLongitude();
 
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

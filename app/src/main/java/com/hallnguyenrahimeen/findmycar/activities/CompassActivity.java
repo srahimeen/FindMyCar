@@ -18,6 +18,11 @@ import android.widget.TextView;
 import com.hallnguyenrahimeen.findmycar.R;
 import com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant;
 
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLat;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLon;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLat;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLon;
+
 
 /**
  * Created by tinnn on 3/29/2017.
@@ -86,17 +91,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
             }
         });
 
-        currentDegree = degrees;
+       // Continuously finds the degree between user's current location which is last and destination which is marked.
+        float bearing = CompassAssistant.getBearingBetweenLocations(lastLat, lastLon, markedLat,markedLon);
 
-        /*
-        If you want you can get the bearing between two locations right here.
-        If you do this in this function you can be sure that the compassassistant is started and
-        you will get continously new degrees:
-
-        float bearing = assistant.getBearingBetweenLocations(currLocLat, currLocLng, destLocLat, destLocLng);
-
-        */
-
+        currentDegree = bearing;
+        //currentDegree = degrees; For magnetic north
     }
 
     @Override
