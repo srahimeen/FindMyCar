@@ -1,38 +1,50 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant;
 import com.hallnguyenrahimeen.findmycar.R;
+import com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant;
+
 
 /**
  * Created by tinnn on 3/29/2017.
  */
 
-public class CompassActivity extends Activity implements com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
-
+public class CompassActivity extends AppCompatActivity implements SensorEventListener, com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
     private CompassAssistant CompassAssistant;
-    //private float currentDegree;
+    private float currentDegree;
 
     private SensorManager sensorManager;
-    private ImageView compass;
+    private Sensor compass;
     private ImageView image;
     private TextView compassAngle;
-    private float currentDegree = 0f;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.compass = (ImageView) findViewById(R.id.compass_view);
+        setContentView(R.layout.activity_compass);
+        image = (ImageView)findViewById(R.id.imageViewCompass);
+        compassAngle = (TextView)findViewById(R.id.angle);
+        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        compass = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if(compass != null){
+            sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
+
 
     @Override
     protected void onResume() {
@@ -43,9 +55,7 @@ public class CompassActivity extends Activity implements com.hallnguyenrahimeen.
         CompassAssistant = new CompassAssistant(CompassActivity.this);
         CompassAssistant.addListener(CompassActivity.this);
         CompassAssistant.start();
-
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -72,7 +82,7 @@ public class CompassActivity extends Activity implements com.hallnguyenrahimeen.
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                compass.startAnimation(ra);
+                image.startAnimation(ra);
             }
         });
 
@@ -90,12 +100,22 @@ public class CompassActivity extends Activity implements com.hallnguyenrahimeen.
     }
 
     @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+
+    @Override
     public void onCompassStopped() {
-        // the compass has stopped. Do maybe
+
     }
 
     @Override
     public void onCompassStarted() {
-        // you can do things here for example if you want to hide a loading indicator.
+
     }
 }

@@ -28,5 +28,6 @@
 
     <!-- Tag line -->
     <string name="tag_line">Find My Car</string>
+    <string name="compass">Compass Navigation</string>
 
 </resources>

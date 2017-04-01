@@ -1,6 +1,7 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -179,6 +180,8 @@ public class MainActivity extends AppCompatActivity
                 } else if (mPinned) {
                     Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
                     //TODO: Make function for compass button, I have been trying this for awhile
+                    Intent intent = new Intent(MainActivity.this, CompassActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     Toast.makeText(MainActivity.this,"The GPS is not turned on.", Toast.LENGTH_SHORT).show();
