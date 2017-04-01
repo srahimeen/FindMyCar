@@ -67,6 +67,8 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
             holder.locLngText = (TextView) convertView
                     .findViewById(R.id.txt_loc_lng  );
             holder.locTimeText = (TextView) convertView
+                    .findViewById(R.id.txt_loc_loc);
+            holder.locTimeText = (TextView) convertView
                     .findViewById(R.id.txt_loc_time);
 
             convertView.setTag(holder);
@@ -76,6 +78,7 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
         StoredLocation employee = (StoredLocation) getItem(position);
         holder.locLatText.setText(employee.getLat() + "");
         holder.locLngText.setText(employee.getLng() + "");
+        holder.locLngText.setText(employee.getLoc() + "");
         holder.locTimeText.setText(employee.getTime() + "");
 
         return convertView;

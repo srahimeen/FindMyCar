@@ -9,17 +9,19 @@ public class StoredLocation {
     private double lat;
     private double lng;
     private String time;
+    private String loc;
 
     //Constructors
     public StoredLocation()
     {
     }
-    public StoredLocation(int id, double lat, double lng, String time)
+    public StoredLocation(int id, double lat, double lng, String time, String loc)
     {
         this.id=id;
         this.lat=lat;
         this.lng=lng;
         this.time=time;
+        this.loc=loc;
     }
 
     //Setters
@@ -35,6 +37,7 @@ public class StoredLocation {
     public void setTime(String time) {
         this.time = time;
     }
+    public void setLoc(String loc) {this.loc = loc; }
 
     //Getters
     public int getId() {
@@ -48,5 +51,8 @@ public class StoredLocation {
     }
     public String getTime() {
         return time;
+    }
+    public String getLoc() {
+        return loc;
     }
 }

@@ -1,10 +1,13 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +38,7 @@ import com.hallnguyenrahimeen.findmycar.fragments.GarageInfoFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.HistoryFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.MainFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.SettingsFragment;
+import com.hallnguyenrahimeen.findmycar.helpers.LocationAddress;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -114,8 +118,31 @@ public class MainActivity extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //handler for the database
         final DBHandler db = new DBHandler(this);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
+        final String format = simpleDateFormat.format(new Date());
+        final int i = 100;
+        class GeocoderHandler extends Handler {
+            @Override
+            public void handleMessage(Message message) {
+                String locationAddress;
+                switch (message.what) {
+                    case 1:
+                        Bundle bundle = message.getData();
+                        locationAddress = bundle.getString("address");
+                        break;
+                    default:
+                        locationAddress = null;
+                }
+                fragment.pinLocation(lastLocation);
+                currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                mPinned = true;
+                db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format, locationAddress));
+                        //tvAddress.setText(locationAddress);
+            }
+        }
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,34 +150,38 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 if (lastLocation != null && !mPinned) { // prevents crash if GPS is left off
-                    fragment.pinLocation(lastLocation);
-                    currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                    mPinned = true;
+                    //fragment.pinLocation(lastLocation);
+                    //currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                    //mPinned = true;
                     fab.setImageResource(R.drawable.ic_fabreturn);
 
                     // Stores pinned location into the database
-                    int i = 100;
-                    fragment.pinLocation(lastLocation);
-                    currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                    i=i+1;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-                    String format = simpleDateFormat.format(new Date());
-                    Log.d("MainActivity", "Current Timestamp: " + format);
-                    db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.latitude, format));
+                    //int i = 100;
+                    //i=i+1;
+
+                    //Log.d("MainActivity", "Current Timestamp: " + format);
+                    LocationAddress locationAddress = new LocationAddress();
+                    locationAddress.getAddressFromLocation(pinnedLatLng.latitude, pinnedLatLng.longitude,
+                            getApplicationContext(), new GeocoderHandler());
+                    //db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format));
 
                     //Printing location info
+
                     Log.d("Reading: ", "Reading all locations..");
                     List<StoredLocation> locations = db.getAllLocations();
 
                     for (StoredLocation location : locations) {
                         String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                                + location.getLng() + " ,Time: " + location.getTime();
+                                + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
                         // Writing locations to log
                         Log.d("Location: : ", log);
                     }
+
                 } else if (mPinned) {
                     Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
                     //TODO: Make function for compass button, I have been trying this for awhile
+                    Intent intent = new Intent(MainActivity.this, CompassActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     Toast.makeText(MainActivity.this,"The GPS is not turned on.", Toast.LENGTH_SHORT).show();
@@ -174,6 +205,7 @@ public class MainActivity extends AppCompatActivity
         currUserData = new UserData();
 
         // Printing all locations
+        /*
         Log.d("Reading: ", "Reading all shops..");
         List<StoredLocation> locations = db.getAllLocations();
 
@@ -183,6 +215,8 @@ public class MainActivity extends AppCompatActivity
             // Writing locations to log
             Log.d("Location: : ", log);
         }
+        */
+
     }
 
     @Override
@@ -278,4 +312,107 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
+
+/*
+    import android.app.Activity;
+    import android.app.AlertDialog;
+    import android.content.DialogInterface;
+    import android.content.Intent;
+    import android.location.Location;
+    import android.location.LocationManager;
+    import android.os.Bundle;
+    import android.os.Handler;
+    import android.os.Message;
+    import android.provider.Settings;
+    import android.view.View;
+    import android.widget.Button;
+    import android.widget.TextView;
+
+    public class MyActivity extends Activity {
+
+        Button btnGPSShowLocation;
+        Button btnShowAddress;
+        TextView tvAddress;
+
+        AppLocationService appLocationService;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_my);
+            tvAddress = (TextView) findViewById(R.id.tvAddress);
+            appLocationService = new AppLocationService(
+                    MyActivity.this);
+
+            btnGPSShowLocation = (Button) findViewById(R.id.btnGPSShowLocation);
+            btnGPSShowLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    Location gpsLocation = appLocationService
+                            .getLocation(LocationManager.GPS_PROVIDER);
+                    if (gpsLocation != null) {
+                        double latitude = gpsLocation.getLatitude();
+                        double longitude = gpsLocation.getLongitude();
+                        String result = "Latitude: " + gpsLocation.getLatitude() +
+                                " Longitude: " + gpsLocation.getLongitude();
+                        tvAddress.setText(result);
+                    } else {
+                        showSettingsAlert();
+                    }
+                }
+            });
+
+            btnShowAddress = (Button) findViewById(R.id.btnShowAddress);
+            btnShowAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+
+                    Location location = appLocationService
+                            .getLocation(LocationManager.GPS_PROVIDER);
+
+                    //you can hard-code the lat & long if you have issues with getting it
+                    //remove the below if-condition and use the following couple of lines
+                    //double latitude = 37.422005;
+                    //double longitude = -122.084095
+
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        LocationAddress locationAddress = new LocationAddress();
+                        locationAddress.getAddressFromLocation(latitude, longitude,
+                                getApplicationContext(), new GeocoderHandler());
+                    } else {
+                        showSettingsAlert();
+                    }
+
+                }
+            });
+
+        }
+
+        public void showSettingsAlert() {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                    MyActivity.this);
+            alertDialog.setTitle("SETTINGS");
+            alertDialog.setMessage("Enable Location Provider! Go to settings menu?");
+            alertDialog.setPositiveButton("Settings",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(
+                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            MyActivity.this.startActivity(intent);
+                        }
+                    });
+            alertDialog.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            alertDialog.show();
+        }
+*/
+
+
 }
