@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 
         //handler for the database
         final DBHandler db = new DBHandler(this);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, hh:mm a");
         final String format = simpleDateFormat.format(new Date());
         final int i = 100;
         class GeocoderHandler extends Handler {

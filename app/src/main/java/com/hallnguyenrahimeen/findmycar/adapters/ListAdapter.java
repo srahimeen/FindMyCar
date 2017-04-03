@@ -36,6 +36,7 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
         TextView locLatText;
         TextView locLngText;
         TextView locTimeText;
+        TextView locLocText;
     }
 
     @Override
@@ -62,23 +63,28 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
             convertView = inflater.inflate(R.layout.row_item, null);
             holder = new ViewHolder();
 
+            /*
             holder.locLatText = (TextView) convertView
                     .findViewById(R.id.txt_loc_lat);
             holder.locLngText = (TextView) convertView
                     .findViewById(R.id.txt_loc_lng  );
-            holder.locTimeText = (TextView) convertView
+            */
+            holder.locLocText = (TextView) convertView
                     .findViewById(R.id.txt_loc_loc);
             holder.locTimeText = (TextView) convertView
                     .findViewById(R.id.txt_loc_time);
+
 
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         StoredLocation employee = (StoredLocation) getItem(position);
+        /*
         holder.locLatText.setText(employee.getLat() + "");
         holder.locLngText.setText(employee.getLng() + "");
-        holder.locLngText.setText(employee.getLoc() + "");
+        */
+        holder.locLocText.setText(employee.getLoc() + "");
         holder.locTimeText.setText(employee.getTime() + "");
 
         return convertView;

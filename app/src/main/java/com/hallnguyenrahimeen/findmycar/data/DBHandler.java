@@ -74,7 +74,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<StoredLocation> getAllLocations() {
         ArrayList<StoredLocation> locationList = new ArrayList<StoredLocation>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION;
+        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " ORDER BY id DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
