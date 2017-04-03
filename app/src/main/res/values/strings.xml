@@ -29,5 +29,9 @@
     <!-- Tag line -->
     <string name="tag_line">Find My Car</string>
     <string name="compass">Compass Navigation</string>
+    <string name="exitTitle">Really Exit?</string>
+    <string name="exitMessage">Are you sure you want to exit?</string>
+    <string name="compassMessage">Compass navigation has started pointing to pinned location.</string>
+    <string name="gpsOff">The GPS is not yet available.</string>
 
 </resources>

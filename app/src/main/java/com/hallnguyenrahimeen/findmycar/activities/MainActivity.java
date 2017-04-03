@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
     public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
-    private boolean mPinned = false; // Checks if pin is placed
+    public static boolean pinnedCheck = false; // Checks if pin is placed
 
 
     public static final int MULTIPLE_PERMISSIONS = 100;
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 fragment.pinLocation(lastLocation);
                 currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                mPinned = true;
+                pinnedCheck = true;
                 db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format, locationAddress));
                         //tvAddress.setText(locationAddress);
             }
@@ -151,10 +151,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                if (lastLocation != null && !mPinned) { // prevents crash if GPS is left off
+                if (lastLocation != null && !pinnedCheck) { // prevents crash if GPS is left off
                     //fragment.pinLocation(lastLocation);
                     //currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                    //mPinned = true;
+                    //pinnedCheck = true;
                     fab.setImageResource(R.drawable.ic_fabreturn);
 
                     // Stores pinned location into the database
@@ -179,14 +179,14 @@ public class MainActivity extends AppCompatActivity
                         Log.d("Location: : ", log);
                     }
 
-                } else if (mPinned) {
-                    Toast.makeText(MainActivity.this,"A location has already been pinned.", Toast.LENGTH_SHORT).show();
-                    //TODO: Make function for compass button, I have been trying this for awhile
-                    Intent intent = new Intent(MainActivity.this, CompassActivity.class);
+                } else if (pinnedCheck) {
+                    Toast.makeText(MainActivity.this, R.string.compassMessage, Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(MainActivity.this, CompassFragmentActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainActivity.this,"The GPS is not turned on.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.gpsOff, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -228,8 +228,8 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             new AlertDialog.Builder(this)
-                    .setTitle("Really Exit?")
-                    .setMessage("Are you sure you want to exit?")
+                    .setTitle(R.string.exitTitle)
+                    .setMessage(R.string.exitMessage)
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 

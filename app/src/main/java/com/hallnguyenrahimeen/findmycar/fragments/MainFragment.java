@@ -276,10 +276,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-    // Allows for long press to pin on map, for saving places to go to later far away.
+
     @Override
     public void onMapLongClick(LatLng point) {
-        mGoogleMap.addMarker(new MarkerOptions().position(point).title(point.toString()));
+        // Future implementation: Allows for long press to pin on map from a distance
+        // mGoogleMap.addMarker(new MarkerOptions().position(point).title(point.toString()));
     }
 
     @Override

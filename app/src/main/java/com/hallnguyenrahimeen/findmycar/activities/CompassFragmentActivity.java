@@ -1,15 +1,12 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.FragmentActivity;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -28,7 +25,7 @@ import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLon;
  * Created by tinnn on 3/29/2017.
  */
 
-public class CompassActivity extends AppCompatActivity implements SensorEventListener, com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
+public class CompassFragmentActivity extends FragmentActivity implements SensorEventListener, com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
     private CompassAssistant CompassAssistant;
     private float currentDegree;
 
@@ -57,8 +54,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
         // this assistant will point to the magnetic north. If you want to have a compass that points
         // to the geographic north, you have to put a location into the constructor.
-        CompassAssistant = new CompassAssistant(CompassActivity.this);
-        CompassAssistant.addListener(CompassActivity.this);
+        CompassAssistant = new CompassAssistant(CompassFragmentActivity.this);
+        CompassAssistant.addListener(CompassFragmentActivity.this);
         CompassAssistant.start();
     }
     @Override
