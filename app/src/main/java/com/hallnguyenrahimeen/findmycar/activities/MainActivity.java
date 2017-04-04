@@ -1,8 +1,10 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -46,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLocation;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinnedLatLng;
 
 public class MainActivity extends AppCompatActivity
@@ -58,7 +60,14 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
     public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
-    public static boolean pinnedCheck = false; // Checks if pin is placed
+
+    // Stores data to users device
+    SharedPreferences pref;
+    public static final String mypreference = "mypref";
+    public static final String pinned = "pinned";
+
+
+    boolean pinnedCheck = false;
 
 
     public static final int MULTIPLE_PERMISSIONS = 100;
@@ -121,6 +130,12 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Get Shared Preferences
+        pref = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        if(pref.contains(pinned)) {
+            pinnedCheck = pref.getBoolean(pinned, false);
+        }
+
         //handler for the database
         final DBHandler db = new DBHandler(this);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, hh:mm a");
@@ -138,7 +153,9 @@ public class MainActivity extends AppCompatActivity
                     default:
                         locationAddress = null;
                 }
-                fragment.pinLocation(lastLocation);
+
+
+                fragment.pinLocation(pinLocation);
                 currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
                 pinnedCheck = true;
                 db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format, locationAddress));
@@ -150,9 +167,11 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Allows preferences to updated
+                SharedPreferences.Editor editor = pref.edit();
 
-                if (lastLocation != null && !pinnedCheck) { // prevents crash if GPS is left off
-                    //fragment.pinLocation(lastLocation);
+                if (pinLocation != null && !pinnedCheck) { // prevents crash if GPS is left off
+                    //fragment.pinLocation(pinLocation);
                     //currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
                     //pinnedCheck = true;
                     fab.setImageResource(R.drawable.ic_fabreturn);
@@ -179,17 +198,41 @@ public class MainActivity extends AppCompatActivity
                         Log.d("Location: : ", log);
                     }
 
+
+                    //Storing data as KEY/VALUE pair in the device
+                    editor.putBoolean(pinned, true);
+                    pinnedCheck = true;
+                    // Save the changes in SharedPreferences
+                    editor.commit(); // commit changes
+
                 } else if (pinnedCheck) {
                     Toast.makeText(MainActivity.this, R.string.compassMessage, Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(MainActivity.this, CompassFragmentActivity.class);
                     startActivity(intent);
+
+                    //Removing data as KEY/VALUE pair in the device
+                    pinnedCheck = false;
+                    editor.remove(pinned);
+                    editor.commit(); // commit changes
+
+                    // Restore icon to pin location
+                    fab.setImageResource(R.drawable.ic_fab);
                 }
                 else {
                     Toast.makeText(MainActivity.this, R.string.gpsOff, Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        // Checks if a pin has already been placed previously and
+        if (pinnedCheck) {
+            fab.setImageResource(R.drawable.ic_fabreturn);
+            //TODO: Get last location from database
+        }
+        else {
+            fab.setImageResource(R.drawable.ic_fab);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

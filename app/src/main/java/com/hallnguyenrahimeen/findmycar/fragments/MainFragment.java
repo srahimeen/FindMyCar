@@ -49,7 +49,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
-    public static Location lastLocation = null;
+    public static Location pinLocation = null;
     public static LatLng pinnedLatLng = null;
 
 
@@ -161,7 +161,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onLocationChanged(Location location) {
 
-        lastLocation = location;
+        pinLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
@@ -187,7 +187,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     //Function to place current location marker on map through button press
     public void pinLocation(Location location) {
 
-        lastLocation = location;
+        pinLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
