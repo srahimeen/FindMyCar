@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +54,7 @@ public class GarageInfoFragment extends Fragment {
         locationHandler = new DBHandler(activity);
         pref = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         //Still working on trying to set info if car is parked
+        /*
         if(pref.contains(pinned)) {
             if(pref.getBoolean(pinned, false)) {
                 ViewHolder holder = new ViewHolder();
@@ -65,6 +67,7 @@ public class GarageInfoFragment extends Fragment {
                 }
             }
         }
+        */
     }
 
     @Override
@@ -72,6 +75,20 @@ public class GarageInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_garage_info, container,
                 false);
+
+        if(pref.contains(pinned)) {
+            if(pref.getBoolean(pinned, false)) {
+                //ViewHolder holder = new ViewHolder();
+                location = locationHandler.getMostRecentLocation();
+                Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
+                if(location != null){
+                    TextView t = (TextView) view.findViewById(R.id.parked_details);
+                    t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());
+                }
+            }
+        }
+
+
         findViewsById(view);
 
         //task = new GetLocationTask(activity);
@@ -85,6 +102,19 @@ public class GarageInfoFragment extends Fragment {
 
     @Override
     public void onResume() {
+        /*
+        if(pref.contains(pinned)) {
+            if(pref.getBoolean(pinned, false)) {
+                //ViewHolder holder = new ViewHolder();
+                location = locationHandler.getMostRecentLocation();
+                Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
+                if(location != null){
+                    TextView t = (TextView) view.findViewById(R.id.parked_details);
+                    t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());
+                }
+            }
+        }
+        */
         //COME BACK TO THIS, IDK WHAT IT DOES BUT IT BROKE THE THING
         //getActivity().setTitle(R.string.app_name);
         //getActivity().getActionBar().setTitle(R.string.app_name);

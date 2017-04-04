@@ -177,18 +177,13 @@ public class MainActivity extends AppCompatActivity
                     // Pin the location on the map
                     fragment.drawMarker(currUserData.getUserLatLng());
 
-                    // Stores pinned location into the database
-                    //int i = 100;
-                    //i=i+1;
-
-                    //Log.d("MainActivity", "Current Timestamp: " + format);
                     LocationAddress locationAddress = new LocationAddress();
                     locationAddress.getAddressFromLocation(pinLatLng.latitude, pinLatLng.longitude,
                             getApplicationContext(), new GeocoderHandler());
                     //db.addLocation(new StoredLocation(i,pinLatLng.latitude,pinLatLng.longitude, format));
 
                     //Printing location info
-
+                    /*
                     Log.d("Reading: ", "Reading all locations..");
                     List<StoredLocation> locations = db.getAllLocations();
 
@@ -198,8 +193,7 @@ public class MainActivity extends AppCompatActivity
                         // Writing locations to log
                         Log.d("Location: : ", log);
                     }
-
-
+                    */
                     //Storing data as KEY/VALUE pair in the device
                     editor.putBoolean(pinned, true);
                     pinnedCheck = true;
@@ -230,7 +224,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);

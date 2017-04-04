@@ -70,6 +70,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
 
     @Override
     public void onResume() {
+        updateView();
         //COME BACK TO THIS, IDK WHAT IT DOES BUT IT BROKE THE THING
         //getActivity().setTitle(R.string.app_name);
         //getActivity().getActionBar().setTitle(R.string.app_name);
