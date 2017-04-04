@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
-    // Database Version
+    // Database Version, change this number to one greater if you update the table schema at all
     private static final int DATABASE_VERSION = 3;
     // Database Name
     private static final String DATABASE_NAME = "carsInfo";
@@ -70,11 +72,35 @@ public class DBHandler extends SQLiteOpenHelper {
         // return location
         return contact;
     }
+
+    public StoredLocation getMostRecentLocation(){
+        // SELECT max(id), lat, lng, time, location FROM storedLocation GROUP BY lat, lng, time, loc
+        // Doesn't care if the car is parked or not, so you need to check that otherwise, this will
+        // just return the most recent stored location (which will always have the highest ID)
+        String selectQuery = "SELECT max("+ KEY_ID +"), " + KEY_LAT +", " + KEY_LNG + ", " + KEY_TIME
+                + ", " + KEY_LOC + " FROM " + TABLE_STORED_LOCATION + " GROUP BY " + KEY_LAT + ", "
+                + KEY_LNG + ", " + KEY_TIME + ", " + KEY_LOC;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        // Create new location object to return, this is just a single line way of the default
+        // constructor
+        StoredLocation location = new StoredLocation(Integer.parseInt(cursor.getString(0)),
+                Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)),
+                cursor.getString(3), cursor.getString(4));
+        return location;
+    }
+
     // Getting All locations
     public ArrayList<StoredLocation> getAllLocations() {
         ArrayList<StoredLocation> locationList = new ArrayList<StoredLocation>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " ORDER BY id DESC";
+        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " ORDER BY " + KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -82,6 +108,7 @@ public class DBHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
+                //Making new storedLocation object and setting the values
                 StoredLocation location = new StoredLocation();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setLat(Double.parseDouble(cursor.getString(1)));
@@ -114,6 +141,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_LAT, location.getLat());
         values.put(KEY_LNG, location.getLng());
         values.put(KEY_TIME, location.getTime());
+        values.put(KEY_LOC, location.getLoc());
 
         // updating row
         return db.update(TABLE_STORED_LOCATION, values, KEY_ID + " = ?",

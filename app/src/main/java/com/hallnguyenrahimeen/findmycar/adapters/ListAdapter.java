@@ -21,15 +21,15 @@ import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
 public class ListAdapter extends ArrayAdapter<StoredLocation> {
 
     private Context context;
-    List<StoredLocation> locations;
+    private List<StoredLocation> locations;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.ENGLISH);
 
-    public ListAdapter(Context context, List<StoredLocation> employees) {
-        super(context, R.layout.row_item, employees);
+    public ListAdapter(Context context, List<StoredLocation> locations) {
+        super(context, R.layout.row_item, locations);
         this.context = context;
-        this.locations = employees;
+        this.locations = locations;
     }
 
     private class ViewHolder {
@@ -79,13 +79,13 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        StoredLocation employee = (StoredLocation) getItem(position);
+        StoredLocation currLocation = (StoredLocation) getItem(position);
         /*
         holder.locLatText.setText(employee.getLat() + "");
         holder.locLngText.setText(employee.getLng() + "");
         */
-        holder.locLocText.setText(employee.getLoc() + "");
-        holder.locTimeText.setText(employee.getTime() + "");
+        holder.locLocText.setText(currLocation.getLoc() + "");
+        holder.locTimeText.setText(currLocation.getTime() + "");
 
         return convertView;
     }

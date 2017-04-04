@@ -228,7 +228,13 @@ public class MainActivity extends AppCompatActivity
         // Checks if a pin has already been placed previously and
         if (pinnedCheck) {
             fab.setImageResource(R.drawable.ic_fabreturn);
+            Log.d("Pinned WAS CHECKED: ", "YES");
             //TODO: Get last location from database
+            StoredLocation location = db.getMostRecentLocation();
+            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
+                    + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
+            // Writing locations to log
+            Log.d("Location: ", log);
         }
         else {
             fab.setImageResource(R.drawable.ic_fab);
