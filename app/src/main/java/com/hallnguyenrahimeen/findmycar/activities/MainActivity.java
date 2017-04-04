@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity
 
                     // Clears map marker from map
                     fragment.clearMap();
+                    currUserData.setUserLatLng(null);
                 }
                 else {
                     Toast.makeText(MainActivity.this, R.string.gpsOff, Toast.LENGTH_SHORT).show();
@@ -261,7 +262,6 @@ public class MainActivity extends AppCompatActivity
         if (pinnedCheck) {
             fab.setImageResource(R.drawable.ic_fabreturn);
             Log.d("Pinned WAS CHECKED: ", "YES");
-            //TODO: Get last location from database
             StoredLocation location = db.getMostRecentLocation();
             String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
                     + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
@@ -326,10 +326,9 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_main) {
             // Redirect to main fragment
-            MainFragment fragment = new MainFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+            this.finish();
         } else if (id == R.id.nav_history) {
             // Redirect to history fragment
             HistoryFragment fragment = new HistoryFragment();
