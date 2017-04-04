@@ -34,6 +34,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.hallnguyenrahimeen.findmycar.data.DBHandler;
 import com.hallnguyenrahimeen.findmycar.R;
 import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
@@ -49,7 +50,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
-import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinnedLatLng;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -154,11 +155,9 @@ public class MainActivity extends AppCompatActivity
                         locationAddress = null;
                 }
 
-
-                fragment.pinLocation(pinLocation);
-                currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
+                currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
                 pinnedCheck = true;
-                db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format, locationAddress));
+                db.addLocation(new StoredLocation(i, pinLatLng.latitude, pinLatLng.longitude, format, locationAddress));
                         //tvAddress.setText(locationAddress);
             }
         }
@@ -171,10 +170,12 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences.Editor editor = pref.edit();
 
                 if (pinLocation != null && !pinnedCheck) { // prevents crash if GPS is left off
-                    //fragment.pinLocation(pinLocation);
-                    //currUserData.setUserLatLng(pinnedLatLng); //add pinned latlang to UserData
-                    //pinnedCheck = true;
+                    currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
+                    // Changes the FAB to compass mode
                     fab.setImageResource(R.drawable.ic_fabreturn);
+
+                    // Pin the location on the map
+                    fragment.drawMarker(currUserData.getUserLatLng());
 
                     // Stores pinned location into the database
                     //int i = 100;
@@ -182,9 +183,9 @@ public class MainActivity extends AppCompatActivity
 
                     //Log.d("MainActivity", "Current Timestamp: " + format);
                     LocationAddress locationAddress = new LocationAddress();
-                    locationAddress.getAddressFromLocation(pinnedLatLng.latitude, pinnedLatLng.longitude,
+                    locationAddress.getAddressFromLocation(pinLatLng.latitude, pinLatLng.longitude,
                             getApplicationContext(), new GeocoderHandler());
-                    //db.addLocation(new StoredLocation(i,pinnedLatLng.latitude,pinnedLatLng.longitude, format));
+                    //db.addLocation(new StoredLocation(i,pinLatLng.latitude,pinLatLng.longitude, format));
 
                     //Printing location info
 
@@ -211,12 +212,12 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent(MainActivity.this, CompassFragmentActivity.class);
                     startActivity(intent);
 
-                    //Removing data as KEY/VALUE pair in the device
+                    // Reverts back to parking mode once exited
                     pinnedCheck = false;
                     editor.remove(pinned);
                     editor.commit(); // commit changes
 
-                    // Restore icon to pin location
+                    // Sets FAB back to parking mode
                     fab.setImageResource(R.drawable.ic_fab);
                 }
                 else {
@@ -225,22 +226,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Checks if a pin has already been placed previously and
-        if (pinnedCheck) {
-            fab.setImageResource(R.drawable.ic_fabreturn);
-            Log.d("Pinned WAS CHECKED: ", "YES");
-            //TODO: Get last location from database
-            StoredLocation location = db.getMostRecentLocation();
-            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                    + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
-            // Writing locations to log
-            Log.d("Location: ", log);
-        }
-        else {
-            fab.setImageResource(R.drawable.ic_fab);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -267,6 +253,24 @@ public class MainActivity extends AppCompatActivity
             Log.d("Location: : ", log);
         }
         */
+
+        // Checks if a pin has already been placed previously and
+        if (pinnedCheck) {
+            fab.setImageResource(R.drawable.ic_fabreturn);
+            Log.d("Pinned WAS CHECKED: ", "YES");
+            //TODO: Get last location from database
+            StoredLocation location = db.getMostRecentLocation();
+            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
+                    + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
+            // Writing locations to log
+            Log.d("Location: ", log);
+
+            pinLatLng = new LatLng(location.getLat(), location.getLng());
+            currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
+        }
+        else {
+            fab.setImageResource(R.drawable.ic_fab);
+        }
 
     }
 

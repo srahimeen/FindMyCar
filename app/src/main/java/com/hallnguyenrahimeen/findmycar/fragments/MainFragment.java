@@ -22,9 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -45,12 +43,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private MapView mMapView;
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-    private Marker mCurrLocationMarker;
     private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
     public static Location pinLocation = null;
-    public static LatLng pinnedLatLng = null;
+    public static LatLng pinLatLng = null;
 
 
     // Used for compass navigation
@@ -160,18 +157,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onLocationChanged(Location location) {
-
         pinLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         lastLat = location.getLatitude();
         lastLon = location.getLongitude();
 
         //update pinned latLng
-        pinnedLatLng = latLng;
+        pinLatLng = latLng;
 
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -183,30 +176,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-
-    //Function to place current location marker on map through button press
-    public void pinLocation(Location location) {
-
-        pinLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Saved Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-
-        // Storing coordinates for compass navigation
-        markedLat = location.getLatitude();
-        markedLon = location.getLongitude();
-
-        //moving the map
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
-    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -290,7 +259,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
 
     // Redraws map markers
-    private void drawMarker(LatLng point) {
+    public void drawMarker(LatLng point) {
         // Creating an instance of MarkerOptions
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -299,5 +268,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         // Adding marker on the Google Map
         mGoogleMap.addMarker(markerOptions);
+
+        //moving the map
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 }

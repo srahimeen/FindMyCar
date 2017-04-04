@@ -1,12 +1,16 @@
 package com.hallnguyenrahimeen.findmycar.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -33,6 +37,8 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
     private Sensor compass;
     private ImageView image;
     private TextView compassAngle;
+
+    public static boolean removePin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
