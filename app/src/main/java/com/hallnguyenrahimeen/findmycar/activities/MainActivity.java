@@ -219,6 +219,9 @@ public class MainActivity extends AppCompatActivity
 
                     // Sets FAB back to parking mode
                     fab.setImageResource(R.drawable.ic_fab);
+
+                    // Clears map marker from map
+                    fragment.clearMap();
                 }
                 else {
                     Toast.makeText(MainActivity.this, R.string.gpsOff, Toast.LENGTH_SHORT).show();

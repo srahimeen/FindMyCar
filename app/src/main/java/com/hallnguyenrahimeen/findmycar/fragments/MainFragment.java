@@ -273,4 +273,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
+
+    public void clearMap() {
+        mGoogleMap.clear();
+    }
 }
