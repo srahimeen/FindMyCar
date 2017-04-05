@@ -1,6 +1,7 @@
 package com.hallnguyenrahimeen.findmycar.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Text;
 import com.hallnguyenrahimeen.findmycar.R;
 
 /**
@@ -22,7 +21,14 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
 
     Button btnOk, btnCancel;
     EditText txtFloorNumberInput;
-    public static int floorNumber = 0;
+    private Integer mFloorNumber = 0;
+    Communicator communicator;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        communicator = (Communicator) context;
+    }
 
     public RequestFloorDialogFragment() {
         // Required empty public constructor
@@ -48,14 +54,23 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
         if(view.getId() == R.id.btn_ok){
             String input  = txtFloorNumberInput.getText().toString();
             try {
-                floorNumber = Integer.parseInt(input);
+                mFloorNumber = Integer.parseInt(input);
+                communicator.onDialogMessage(mFloorNumber);
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Invalid floor number", Toast.LENGTH_LONG).show();
             }
+
+            dismiss();
         }
         else {
-
+            mFloorNumber = 0;
+            dismiss();
         }
     }
 
+    //interface to send data from dialog to main activity
+    public interface Communicator
+    {
+        public void onDialogMessage(Integer floorNum);
+    }
 }

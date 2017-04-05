@@ -55,7 +55,7 @@ import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocatio
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        implements RequestFloorDialogFragment.Communicator, NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //declared as global so we have access to it
     NavigationView navigationView = null;
@@ -72,8 +72,17 @@ public class MainActivity extends AppCompatActivity
     //TODO: add comments explaining this
     boolean pinnedCheck = false;
 
+
     //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
+
+    //when the dialog is made, this method runs
+    @Override
+    public void onDialogMessage(Integer floorNum) {
+         Integer floorNumber = floorNum; //get the floor number the user picks in the dialog
+        currUserData.setUserFloorNumber(floorNumber); //assign the floor number to currUserData
+        Log.d("floor number", currUserData.getUserFloorNumber().toString());
+    }
 
     //method to present dialog when FAB is present
     public void showRequestFloorDialog(View v) {
