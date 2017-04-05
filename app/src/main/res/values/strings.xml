@@ -25,5 +25,8 @@
     <string name="compassMessage">Compass navigation has started pointing to pinned location.</string>
     <string name="gpsOff">The GPS is not yet available.</string>
     <string name="floor">Floor:</string>
+    <string name="exitCompass">Exit Compass Navigation?</string>
+    <string name="exitCompasssInfo">Once exited the pin will be removed from the map, are you sure?</string>
+    <string name="destination">Destination:</string>
 
 </resources>

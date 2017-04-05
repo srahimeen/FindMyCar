@@ -40,8 +40,6 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
     private TextView compassAngle; // May be used to display the degrees
     private TextView floorLevel;
 
-    public static boolean removePin = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +77,7 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
 
     @Override
     public void onNewDegreesToNorth(float degrees) {
-        // this is not used here because we want to have a smooth moving compass.
+
     }
 
     @Override
@@ -127,4 +125,20 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
     public void onCompassStarted() {
 
     }
+
+    // Prompts user before exiting compass navigation
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.exitCompass)
+                .setMessage(R.string.exitCompasssInfo)
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        CompassFragmentActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
 }
