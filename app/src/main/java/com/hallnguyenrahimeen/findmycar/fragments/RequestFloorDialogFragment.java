@@ -1,6 +1,7 @@
 package com.hallnguyenrahimeen.findmycar.fragments;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -39,6 +40,8 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setTitle("Floor Number");
         View view = inflater.inflate(R.layout.fragment_request_floor_dialog, container, false);
         btnOk = (Button) view.findViewById(R.id.btn_ok);
         btnCancel = (Button) view.findViewById(R.id.btn_cancel);
