@@ -97,7 +97,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
         mGoogleMap.setOnMapClickListener(this);
         mGoogleMap.setOnMapLongClickListener(this);
 
@@ -168,7 +167,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         //stop location updates
         if (mGoogleApiClient != null) {
