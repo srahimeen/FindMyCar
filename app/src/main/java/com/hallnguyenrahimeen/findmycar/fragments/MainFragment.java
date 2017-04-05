@@ -162,7 +162,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         lastLat = location.getLatitude();
         lastLon = location.getLongitude();
 
-        //update pinned latLng
+        //update PIN_SAVE latLng
         pinLatLng = latLng;
 
         //moving the map

@@ -33,7 +33,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     public static final String ARG_ITEM_ID = "location_list";
     SharedPreferences pref;
     public static final String mypreference = "mypref";
-    public static final String pinned = "pinned";
+    public static final String pinned = "PIN_SAVE";
     //final Context context = this;
     Activity activity;
     ListView locationListView;

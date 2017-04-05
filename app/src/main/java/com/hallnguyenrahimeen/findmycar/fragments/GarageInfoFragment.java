@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference;
 public class GarageInfoFragment extends Fragment {
     SharedPreferences pref;
     public static final String mypreference = "mypref";
-    public static final String pinned = "pinned";
+    public static final String pinned = "PIN_SAVE";
 
     private class ViewHolder {
         TextView locLatText;
@@ -55,8 +55,8 @@ public class GarageInfoFragment extends Fragment {
         pref = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         //Still working on trying to set info if car is parked
         /*
-        if(pref.contains(pinned)) {
-            if(pref.getBoolean(pinned, false)) {
+        if(pref.contains(PIN_SAVE)) {
+            if(pref.getBoolean(PIN_SAVE, false)) {
                 ViewHolder holder = new ViewHolder();
                 location = locationHandler.getMostRecentLocation();
                 Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
@@ -103,8 +103,8 @@ public class GarageInfoFragment extends Fragment {
     @Override
     public void onResume() {
         /*
-        if(pref.contains(pinned)) {
-            if(pref.getBoolean(pinned, false)) {
+        if(pref.contains(PIN_SAVE)) {
+            if(pref.getBoolean(PIN_SAVE, false)) {
                 //ViewHolder holder = new ViewHolder();
                 location = locationHandler.getMostRecentLocation();
                 Log.d("Stuff: ", location.getLoc() + " " + location.getTime());

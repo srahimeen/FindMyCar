@@ -49,7 +49,6 @@ import com.hallnguyenrahimeen.findmycar.helpers.LocationAddress;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
@@ -60,18 +59,17 @@ public class MainActivity extends AppCompatActivity
     //declared as global so we have access to it
     NavigationView navigationView = null;
     Toolbar toolbar = null;
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient; // TODO Delete?
     public static UserData currUserData;
     public static UserData[] currUserDataArray = new UserData[50]; //used for multiple markers
 
-    // Stores data to users device
-    //TODO: do these variables names comply with style guides? refactor?
+    // Stores data to users device using SharedPreferences
     SharedPreferences pref;
-    public static final String mypreference = "mypref";
-    public static final String pinned = "pinned";
+    public static final String MYPREF = "MYPREF";
+    public static final String PIN_SAVE = "PIN_SAVE";
+    public static final String FLOOR_SAVE = "FLOOR_SAVE";
 
-    //TODO: add comments explaining this
-    boolean pinnedCheck = false;
+    boolean pinnedCheck = false; // Stores a check if user leaves the app with the map PIN_SAVE
 
 
     //permissions value
@@ -151,9 +149,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Get Shared Preferences
-        pref = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        if(pref.contains(pinned)) {
-            pinnedCheck = pref.getBoolean(pinned, false);
+        pref = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
+        if(pref.contains(PIN_SAVE)) {
+            pinnedCheck = pref.getBoolean(PIN_SAVE, false);
         }
 
 
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity
                         locationAddress = null;
                 }
 
-                currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
+                currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
                 pinnedCheck = true;
                 db.addLocation(new StoredLocation(i, pinLatLng.latitude, pinLatLng.longitude, format, locationAddress));
                         //tvAddress.setText(locationAddress);
@@ -189,8 +187,9 @@ public class MainActivity extends AppCompatActivity
                 // Allows preferences to updated
                 SharedPreferences.Editor editor = pref.edit();
 
+                // Parking Mode --> Pins the current location and changes to Navigation mode
                 if (pinLocation != null && !pinnedCheck) { // prevents crash if GPS is left off
-                    currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
+                    currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
                     // Changes the FAB to compass mode
                     fab.setImageResource(R.drawable.ic_fabreturn);
 
@@ -215,17 +214,23 @@ public class MainActivity extends AppCompatActivity
                     }
                     */
                     //Storing data as KEY/VALUE pair in the device
-                    editor.putBoolean(pinned, true);
+                    editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
-                    // Save the changes in SharedPreferences
-                    editor.commit(); // commit changes
 
-                    //TODO: request user to input floor number
+                    // Storing floor info into the device for reusage upon exit
                     showRequestFloorDialog(view);
+                    // TODO : some how some way get currUserData.getUserFloorNumber() to be finished
+                    // or stored by this line
+
+                    // editor.putInt(FLOOR_SAVE, currUserData.getUserFloorNumber()); // Stores floornumber into sharedPref
 
 
+                    editor.commit(); // Save the changes in SharedPreferences + commit changes
 
-                } else if (pinnedCheck) {
+
+                }
+                // Navigation Mode --> Displays compass pointing to PIN_SAVE location and reverts to Parking upon exit
+                else if (pinnedCheck) {
                     Toast.makeText(MainActivity.this, R.string.compassMessage, Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(MainActivity.this, CompassFragmentActivity.class);
@@ -233,7 +238,7 @@ public class MainActivity extends AppCompatActivity
 
                     // Reverts back to parking mode once exited
                     pinnedCheck = false;
-                    editor.remove(pinned);
+                    editor.remove(PIN_SAVE);
                     editor.commit(); // commit changes
 
                     // Sets FAB back to parking mode
@@ -277,7 +282,7 @@ public class MainActivity extends AppCompatActivity
         }
         */
 
-        // Checks if a pin has already been placed previously and
+        // Checks if a pin has already been placed previously and restores navigation view
         if (pinnedCheck) {
             fab.setImageResource(R.drawable.ic_fabreturn);
             Log.d("Pinned WAS CHECKED: ", "YES");
@@ -287,8 +292,11 @@ public class MainActivity extends AppCompatActivity
             // Writing locations to log
             Log.d("Location: ", log);
 
+            // Restore Navigation
             pinLatLng = new LatLng(location.getLat(), location.getLng());
-            currUserData.setUserLatLng(pinLatLng); //add pinned latlang to UserData
+            currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
+            // Restore Floor Number
+            //currUserData.setUserFloorNumber(pref.getInt(FLOOR_SAVE, 0));
         }
         else {
             fab.setImageResource(R.drawable.ic_fab);
