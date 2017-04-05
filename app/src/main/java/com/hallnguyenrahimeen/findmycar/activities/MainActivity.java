@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = null;
     private GoogleApiClient mGoogleApiClient;
     public static UserData currUserData;
-    public static UserData[] currUserDataArray = new UserData[50]; //Used for multiple markers
+    public static UserData[] currUserDataArray = new UserData[50]; //used for multiple markers
 
     // Stores data to users device
+    //TODO: do these variables names comply with style guides? refactor?
     SharedPreferences pref;
     public static final String mypreference = "mypref";
     public static final String pinned = "pinned";
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
 
-    //when the dialog is made, this method runs
+    //when the dialog is made, this method runs from the communicator interface
     @Override
     public void onDialogMessage(Integer floorNum) {
          Integer floorNumber = floorNum; //get the floor number the user picks in the dialog
