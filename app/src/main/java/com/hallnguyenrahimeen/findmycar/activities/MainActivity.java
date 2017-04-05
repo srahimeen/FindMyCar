@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -42,6 +43,7 @@ import com.hallnguyenrahimeen.findmycar.data.UserData;
 import com.hallnguyenrahimeen.findmycar.fragments.GarageInfoFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.HistoryFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.MainFragment;
+import com.hallnguyenrahimeen.findmycar.fragments.RequestFloorDialogFragment;
 import com.hallnguyenrahimeen.findmycar.fragments.SettingsFragment;
 import com.hallnguyenrahimeen.findmycar.helpers.LocationAddress;
 
@@ -67,11 +69,17 @@ public class MainActivity extends AppCompatActivity
     public static final String mypreference = "mypref";
     public static final String pinned = "pinned";
 
-
+    //TODO: add comments explaining this
     boolean pinnedCheck = false;
 
-
+    //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
+
+    public void showRequestFloorDialog(View v) {
+        FragmentManager manager = getSupportFragmentManager();
+        RequestFloorDialogFragment requestFloorDialog = new RequestFloorDialogFragment();
+        requestFloorDialog.show(manager, "Floor");
+    }
 
     // function to check permissions
     private void checkPermission() {
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity
             pinnedCheck = pref.getBoolean(pinned, false);
         }
 
+
         //handler for the database
         final DBHandler db = new DBHandler(this);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, hh:mm a");
@@ -199,6 +208,11 @@ public class MainActivity extends AppCompatActivity
                     pinnedCheck = true;
                     // Save the changes in SharedPreferences
                     editor.commit(); // commit changes
+
+                    //TODO: request user to input floor number
+                    showRequestFloorDialog(view);
+
+
 
                 } else if (pinnedCheck) {
                     Toast.makeText(MainActivity.this, R.string.compassMessage, Toast.LENGTH_LONG).show();
