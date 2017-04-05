@@ -23,7 +23,7 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
     Button btnOk, btnCancel;
     EditText txtFloorNumberInput;
     private Integer mFloorNumber = 0;
-    Communicator communicator;
+    Communicator communicator; //instance of communicator interface, see below
 
     @Override
     public void onAttach(Context context) {
@@ -55,10 +55,10 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_ok){
-            String input  = txtFloorNumberInput.getText().toString();
             try {
+                String input  = txtFloorNumberInput.getText().toString();
                 mFloorNumber = Integer.parseInt(input);
-                communicator.onDialogMessage(mFloorNumber);
+                communicator.onDialogMessage(mFloorNumber); //send the floor number input from dialog
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Invalid floor number", Toast.LENGTH_LONG).show();
             }
@@ -66,7 +66,7 @@ public class RequestFloorDialogFragment extends DialogFragment implements View.O
             dismiss();
         }
         else {
-            mFloorNumber = 0;
+            mFloorNumber = 0; //TODO: change functionality for when uses chooses to cancel, for now default to 0
             dismiss();
         }
     }
