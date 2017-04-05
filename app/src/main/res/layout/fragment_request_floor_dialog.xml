@@ -43,7 +43,7 @@
         android:text="Ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btl_ok"
+        android:id="@+id/btn_ok"
         android:layout_below="@+id/input_floor"
         android:layout_alignRight="@+id/dialog_message"
         android:layout_alignEnd="@+id/dialog_message" />

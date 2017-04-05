@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
 
+    //method to present dialog when FAB is present
     public void showRequestFloorDialog(View v) {
         FragmentManager manager = getSupportFragmentManager();
         RequestFloorDialogFragment requestFloorDialog = new RequestFloorDialogFragment();
