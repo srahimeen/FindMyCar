@@ -33,6 +33,7 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
     }
 
     private class ViewHolder {
+        TextView id;
         TextView locLatText;
         TextView locLngText;
         TextView locTimeText;
@@ -68,6 +69,9 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
                     .findViewById(R.id.txt_loc_lat);
             holder.locLngText = (TextView) convertView
                     .findViewById(R.id.txt_loc_lng  );
+
+            holder.id = (TextView) convertView
+                    .findViewById(R.id.txt_id);
             */
             holder.locLocText = (TextView) convertView
                     .findViewById(R.id.txt_loc_loc);
@@ -84,6 +88,7 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
         holder.locLatText.setText(employee.getLat() + "");
         holder.locLngText.setText(employee.getLng() + "");
         */
+        //holder.id.setText(currLocation.getId() + "");
         holder.locLocText.setText(currLocation.getLoc() + "");
         holder.locTimeText.setText(currLocation.getTime() + "");
 

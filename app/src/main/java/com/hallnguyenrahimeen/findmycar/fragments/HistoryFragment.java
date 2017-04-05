@@ -4,7 +4,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,7 +31,9 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         OnItemLongClickListener {
 
     public static final String ARG_ITEM_ID = "location_list";
-
+    SharedPreferences pref;
+    public static final String mypreference = "mypref";
+    public static final String pinned = "pinned";
     //final Context context = this;
     Activity activity;
     ListView locationListView;
@@ -45,6 +49,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         super.onCreate(savedInstanceState);
         activity = getActivity();
         locationHandler = new DBHandler(activity);
+        pref = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -137,6 +142,16 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         @Override
         protected ArrayList<StoredLocation> doInBackground(Void... arg0) {
             ArrayList<StoredLocation> locationList = locationHandler.getAllLocations();
+            if(pref.contains(pinned)) {
+                if (pref.getBoolean(pinned, false)) {
+                    Log.d(":::PINNED IS TRUE:::","");
+                    locationList = locationHandler.getAllButFirstLocations();
+                }
+            }
+            else{
+                Log.d(":::PINNED IS FALSE:::","");
+                locationList = locationHandler.getAllLocations();
+            }
             return locationList;
         }
 

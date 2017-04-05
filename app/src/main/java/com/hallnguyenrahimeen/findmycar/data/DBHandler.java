@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.SimpleTimeZone;
 
 public class DBHandler extends SQLiteOpenHelper {
     // Database Version, change this number to one greater if you update the table schema at all
@@ -77,9 +79,13 @@ public class DBHandler extends SQLiteOpenHelper {
         // SELECT max(id), lat, lng, time, location FROM storedLocation GROUP BY lat, lng, time, loc
         // Doesn't care if the car is parked or not, so you need to check that otherwise, this will
         // just return the most recent stored location (which will always have the highest ID)
+        /*
         String selectQuery = "SELECT max("+ KEY_ID +"), " + KEY_LAT +", " + KEY_LNG + ", " + KEY_TIME
                 + ", " + KEY_LOC + " FROM " + TABLE_STORED_LOCATION + " GROUP BY " + KEY_LAT + ", "
                 + KEY_LNG + ", " + KEY_TIME + ", " + KEY_LOC;
+        */
+        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " WHERE " + KEY_ID +
+                "=(SELECT max(" + KEY_ID + ") FROM " + TABLE_STORED_LOCATION + ")";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -95,12 +101,41 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(3), cursor.getString(4));
         return location;
     }
-
     // Getting All locations
     public ArrayList<StoredLocation> getAllLocations() {
         ArrayList<StoredLocation> locationList = new ArrayList<StoredLocation>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " ORDER BY " + KEY_ID + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Making new storedLocation object and setting the values
+                StoredLocation location = new StoredLocation();
+                location.setId(Integer.parseInt(cursor.getString(0)));
+                location.setLat(Double.parseDouble(cursor.getString(1)));
+                location.setLng(Double.parseDouble(cursor.getString(2)));
+                location.setTime(cursor.getString(3));
+                location.setLoc(cursor.getString(4));
+                // Adding contact to list
+                locationList.add(location);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return locationList;
+    }
+
+    // Getting All locations except for the first, used to show the history while the car as parked,
+    // as the current parked location isn't history yet technically
+    public ArrayList<StoredLocation> getAllButFirstLocations() {
+        ArrayList<StoredLocation> locationList = new ArrayList<StoredLocation>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " WHERE " + KEY_ID + " <> " +
+                "(SELECT max("+ KEY_ID +") FROM " + TABLE_STORED_LOCATION + ") ORDER BY " + KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

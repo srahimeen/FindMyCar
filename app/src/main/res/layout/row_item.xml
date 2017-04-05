@@ -21,6 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/txt_loc_lat"
             android:padding="6dp" />
+
+        <TextView
+            android:id="@+id/txt_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp" />
         -->
         <TextView
             android:id="@+id/txt_loc_loc"
