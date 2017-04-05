@@ -17,15 +17,6 @@
     <string name="checktitle4">Garage Info</string>
     <string name="checktitle5">Map History</string>
 
-    <string-array name="garage_array">
-        <item>Parking Lot A</item>
-        <item>Parking Lot B</item>
-        <item>Parking Lot C</item>
-        <item>Parking Lot 1</item>
-        <item>Parking Lot 2</item>
-        <item>Parking Lot 3</item>
-    </string-array>
-
     <!-- Tag line -->
     <string name="tag_line">Find My Car</string>
     <string name="compass">Compass Navigation</string>
@@ -33,5 +24,6 @@
     <string name="exitMessage">Are you sure you want to exit?</string>
     <string name="compassMessage">Compass navigation has started pointing to pinned location.</string>
     <string name="gpsOff">The GPS is not yet available.</string>
+    <string name="floor">Floor:</string>
 
 </resources>

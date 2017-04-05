@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.hallnguyenrahimeen.findmycar.R;
 import com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant;
 
+import static com.hallnguyenrahimeen.findmycar.activities.MainActivity.currUserData;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLat;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.lastLon;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLat;
@@ -36,7 +37,8 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
     private SensorManager sensorManager;
     private Sensor compass;
     private ImageView image;
-    private TextView compassAngle;
+    private TextView compassAngle; // May be used to display the degrees
+    private TextView floorLevel;
 
     public static boolean removePin = false;
 
@@ -46,6 +48,8 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
         setContentView(R.layout.activity_compass);
         image = (ImageView)findViewById(R.id.imageViewCompass);
         compassAngle = (TextView)findViewById(R.id.angle);
+        floorLevel = (TextView) findViewById(R.id.floorNum);
+
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         compass = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         if(compass != null){
@@ -58,11 +62,14 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
     protected void onResume() {
         super.onResume();
 
-        // this assistant will point to the magnetic north. If you want to have a compass that points
-        // to the geographic north, you have to put a location into the constructor.
         CompassAssistant = new CompassAssistant(CompassFragmentActivity.this);
         CompassAssistant.addListener(CompassFragmentActivity.this);
         CompassAssistant.start();
+
+        // Displays users floor number on compass navigation
+        if (currUserData.getUserFloorNumber() != null) {
+            floorLevel.setText("Floor: " + currUserData.getUserFloorNumber());
+        }
     }
     @Override
     protected void onPause() {
