@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
     //pressure sensor
     @Override
     public void onSensorChanged(SensorEvent event) {
-
         //if you use this listener as listener of only one sensor (ex, Pressure), then you don't need to check sensor type.
         //if a pressure sensor exists, use it to calculate height
         if (hasBarometer) {
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity
                 mHeight = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, mPressureValue);
                 System.out.println("Height" + mHeight);
                 pressureBasedFloor = Math.round(mHeight);
-                currUserData.setUserFloorNumber(pressureBasedFloor);
             }
         }
     }
@@ -253,13 +251,14 @@ public class MainActivity extends AppCompatActivity
                     //Storing data as KEY/VALUE pair in the device
                     editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
-                    
+
 
                     //if user has no barometer sensor, request dialog
                     if (!hasBarometer) {
                         showRequestFloorDialog(view);
+                    } else {
+                        currUserData.setUserFloorNumber(pressureBasedFloor);
                     }
-
 
                     editor.commit(); // Save the changes in SharedPreferences + commit changes
 
