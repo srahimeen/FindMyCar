@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     float mHeight = 0.0f;
     private Integer pressureBasedFloor = 0;
 
-    //check if device has pressure sensor
+    //check if device has pressure sensor, setup in OnCreate
     boolean hasBarometer = false;
 
 
