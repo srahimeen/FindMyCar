@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
 
 public class GarageInfoFragment extends Fragment {
     SharedPreferences pref;
-    public static final String mypreference = "mypref";
+    public static final String mypreference = "MYPREF";
     public static final String pinned = "PIN_SAVE";
 
     private class ViewHolder {
@@ -86,6 +86,9 @@ public class GarageInfoFragment extends Fragment {
                     t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());
                 }
             }
+        }
+        else{
+            Log.d("Stuff: ", "It didn't work, somebody messed it up");
         }
 
 
