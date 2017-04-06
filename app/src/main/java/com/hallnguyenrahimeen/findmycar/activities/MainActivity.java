@@ -76,18 +76,17 @@ public class MainActivity extends AppCompatActivity
     boolean pinnedCheck = false; // Stores a check if user leaves the app with the map PIN_SAVE
 
     //sensor variables
-    float mPressureValue = 0.0f;
-    float mHeight = 0.0f;
-    private Integer pressureBasedFloor = 0;
+    public float mPressureValue = 0.0f;
+    public float mHeight = 0.0f;
+    public Integer pressureBasedFloor = 0;
 
     //check if device has pressure sensor, setup in OnCreate
     boolean hasBarometer = false;
 
-
     //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
 
-    //pressure sensor
+    //pressure sensor to get pressure, height and floor
     @Override
     public void onSensorChanged(SensorEvent event) {
         //if you use this listener as listener of only one sensor (ex, Pressure), then you don't need to check sensor type.
@@ -179,8 +178,22 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
 
+        //set up navigation
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //set up toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //check permissions here
+        checkPermission();
+
+        //create user data instance when app is opened
+        currUserData = new UserData();
+
+        //check if barometer sensor exists
+        hasBarometer = getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER);
 
         //Get Shared Preferences
         pref = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
@@ -295,17 +308,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        //check permissions here
-        checkPermission();
-
-        //create user data instance
-        currUserData = new UserData();
-
-        //check if barometer sensor exists
-        hasBarometer = getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER);
 
         // Printing all locations
         /*
