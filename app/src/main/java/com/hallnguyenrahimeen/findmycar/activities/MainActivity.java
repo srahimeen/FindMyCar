@@ -54,8 +54,10 @@ import com.hallnguyenrahimeen.findmycar.helpers.LocationAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.hallnguyenrahimeen.findmycar.R.style.AppTheme;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
+import static com.hallnguyenrahimeen.findmycar.fragments.SettingsFragment.DARK_THEME;
 
 public class MainActivity extends AppCompatActivity
         implements SensorEventListener, RequestFloorDialogFragment.Communicator, NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -200,6 +202,11 @@ public class MainActivity extends AppCompatActivity
         pref = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
         if(pref.contains(PIN_SAVE)) {
             pinnedCheck = pref.getBoolean(PIN_SAVE, false);
+        }
+
+        // Changes theme to dark if checked in settings. Not fully working
+        if (DARK_THEME) {
+            setTheme(R.style.DarkTheme);
         }
 
 

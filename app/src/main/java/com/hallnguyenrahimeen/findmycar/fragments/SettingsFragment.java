@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.hallnguyenrahimeen.findmycar.R;
 
@@ -15,17 +16,32 @@ import com.hallnguyenrahimeen.findmycar.R;
  */
 public class SettingsFragment extends Fragment {
 
-
     public SettingsFragment() {
         // Required empty public constructor
     }
+
+    public static boolean DARK_THEME;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_settings, container, false);
+
+        final CheckBox darkTheme = (CheckBox)rootView.findViewById(R.id.darkTheme);
+
+        darkTheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (darkTheme.isChecked())
+                    DARK_THEME = true;
+                else
+                    DARK_THEME = false;
+            }
+        });
+
+        return rootView;
     }
 
 }
