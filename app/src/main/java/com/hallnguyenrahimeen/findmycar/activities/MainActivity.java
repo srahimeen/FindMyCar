@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity
 
         //check if barometer sensor exists
         hasBarometer = getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER);
+        Log.d("Barometer:", String.valueOf(hasBarometer));
 
         //Get Shared Preferences
         pref = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
