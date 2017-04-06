@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        //fab stuff
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,14 +253,7 @@ public class MainActivity extends AppCompatActivity
                     //Storing data as KEY/VALUE pair in the device
                     editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
-
-
-                    // Storing floor info into the device for reusage upon exit
-                    showRequestFloorDialog(view);
-                    // TODO : some how some way get currUserData.getUserFloorNumber() to be finished
-                    // or stored by this line
-
-                    // editor.putInt(FLOOR_SAVE, currUserData.getUserFloorNumber()); // Stores floornumber into sharedPref
+                    
 
                     //if user has no barometer sensor, request dialog
                     if (!hasBarometer) {
