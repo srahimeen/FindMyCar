@@ -1,5 +1,10 @@
 package com.hallnguyenrahimeen.findmycar.data;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -34,4 +39,5 @@ public class UserData {
 
         return userFloorNumber;
     }
+
 }

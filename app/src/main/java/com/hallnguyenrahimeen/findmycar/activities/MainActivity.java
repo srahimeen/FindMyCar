@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,7 +58,7 @@ import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocatio
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
 
 public class MainActivity extends AppCompatActivity
-        implements RequestFloorDialogFragment.Communicator, NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        implements SensorEventListener, RequestFloorDialogFragment.Communicator, NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //declared as global so we have access to it
     NavigationView navigationView = null;
@@ -71,9 +75,41 @@ public class MainActivity extends AppCompatActivity
 
     boolean pinnedCheck = false; // Stores a check if user leaves the app with the map PIN_SAVE
 
+    //sensor variables
+    float mPressureValue = 0.0f;
+    float mHeight = 0.0f;
+    private Integer pressureBasedFloor = 0;
+
+    //check if device has pressure sensor
+    boolean hasBarometer = false;
+
 
     //permissions value
     public static final int MULTIPLE_PERMISSIONS = 100;
+
+    //pressure sensor
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        //if you use this listener as listener of only one sensor (ex, Pressure), then you don't need to check sensor type.
+        //if a pressure sensor exists, use it to calculate height
+        if (hasBarometer) {
+            if( Sensor.TYPE_PRESSURE == event.sensor.getType() ) {
+                mPressureValue = event.values[0];
+                System.out.println("Pressure" + mPressureValue);
+                mHeight = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, mPressureValue);
+                System.out.println("Height" + mHeight);
+                pressureBasedFloor = Math.round(mHeight);
+                currUserData.setUserFloorNumber(pressureBasedFloor);
+            }
+        }
+    }
+
+    //pressure sensor
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 
     //when the dialog is made, this method runs from the communicator interface
     @Override
@@ -217,12 +253,18 @@ public class MainActivity extends AppCompatActivity
                     editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
 
+
                     // Storing floor info into the device for reusage upon exit
                     showRequestFloorDialog(view);
                     // TODO : some how some way get currUserData.getUserFloorNumber() to be finished
                     // or stored by this line
 
                     // editor.putInt(FLOOR_SAVE, currUserData.getUserFloorNumber()); // Stores floornumber into sharedPref
+
+                    //if user has no barometer sensor, request dialog
+                    if (!hasBarometer) {
+                        showRequestFloorDialog(view);
+                    }
 
 
                     editor.commit(); // Save the changes in SharedPreferences + commit changes
@@ -268,6 +310,9 @@ public class MainActivity extends AppCompatActivity
 
         //create user data instance
         currUserData = new UserData();
+
+        //check if barometer sensor exists
+        hasBarometer = getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER);
 
         // Printing all locations
         /*
