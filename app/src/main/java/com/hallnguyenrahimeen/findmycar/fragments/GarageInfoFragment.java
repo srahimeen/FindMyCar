@@ -80,7 +80,7 @@ public class GarageInfoFragment extends Fragment {
             if(pref.getBoolean(pinned, false)) {
                 //ViewHolder holder = new ViewHolder();
                 location = locationHandler.getMostRecentLocation();
-                Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
+                Log.d("Stuff: ", location.getLoc() + " " + location.getTime() + " " + location.getLat() + " " + location.getLng());
                 if(location != null){
                     TextView t = (TextView) view.findViewById(R.id.parked_details);
                     t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());

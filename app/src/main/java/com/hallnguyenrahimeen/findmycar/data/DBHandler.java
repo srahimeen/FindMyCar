@@ -45,13 +45,15 @@ public class DBHandler extends SQLiteOpenHelper {
     // Adding new shop
     public void addLocation(StoredLocation location) {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Log.d("AddLat:::", Double.toString(location.getLat()));
+        Log.d("AddLng:::", Double.toString(location.getLng()));
         ContentValues values = new ContentValues();
         values.put(KEY_LAT, location.getLat()); // location lat
         values.put(KEY_LNG, location.getLng()); // location lng
         values.put(KEY_TIME, location.getTime()); // location time
         values.put(KEY_LOC, location.getLoc()); // location info
-
+        Log.d("AddLatAfter:::", Double.toString(values.getAsDouble(KEY_LAT)));
+        Log.d("AddLngAfter:::", Double.toString(values.getAsDouble(KEY_LNG)));
         // Inserting Row
         db.insert(TABLE_STORED_LOCATION, null, values);
         db.close(); // Closing database connection
@@ -96,6 +98,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         // Create new location object to return, this is just a single line way of the default
         // constructor
+        Log.d("LAT:::",cursor.getString(1));
+        Log.d("LNG:::",cursor.getString(2));
         StoredLocation location = new StoredLocation(Integer.parseInt(cursor.getString(0)),
                 Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)),
                 cursor.getString(3), cursor.getString(4));

@@ -211,18 +211,30 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void handleMessage(Message message) {
                 String locationAddress;
+                double locationLat;
+                double locationLng;
                 switch (message.what) {
                     case 1:
                         Bundle bundle = message.getData();
                         locationAddress = bundle.getString("address");
+                        locationLat = bundle.getDouble("lat");
+                        locationLng = bundle.getDouble("lng");
+                        Log.d("LAT::", Double.toString(locationLat));
+                        Log.d("LNG::", Double.toString(locationLng));
                         break;
                     default:
                         locationAddress = null;
+                        locationLat = pinLatLng.latitude;
+                        locationLng = pinLatLng.longitude;
                 }
 
                 currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
                 pinnedCheck = true;
-                db.addLocation(new StoredLocation(i, pinLatLng.latitude, pinLatLng.longitude, format, locationAddress));
+                StoredLocation newLoc = new StoredLocation(i, locationLat, locationLng, format, locationAddress);
+                Log.d("LAT::", Double.toString(newLoc.getLat()));
+                Log.d("LNG::", Double.toString(newLoc.getLng()));
+                db.addLocation(newLoc);
+                        // new StoredLocation(i, locationLat, locationLng, format, locationAddress));
                         //tvAddress.setText(locationAddress);
             }
         }
