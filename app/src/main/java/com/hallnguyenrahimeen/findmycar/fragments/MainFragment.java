@@ -271,6 +271,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         //moving the map
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomIn());
+
+        // Storing coordinates for compass navigation
+        markedLat = point.latitude;
+        markedLon = point.longitude;
     }
 
     public void clearMap() {

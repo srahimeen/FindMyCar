@@ -55,6 +55,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.hallnguyenrahimeen.findmycar.R.style.AppTheme;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLat;
+import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLon;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLatLng;
 import static com.hallnguyenrahimeen.findmycar.fragments.SettingsFragment.DARK_THEME;
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity
 
         // Changes theme to dark if checked in settings. Not fully working
         if (DARK_THEME) {
-            setTheme(R.style.DarkTheme);
+            setTheme(R.style.ThemeOverlay_AppCompat_Dark);
         }
 
 
@@ -267,20 +269,7 @@ public class MainActivity extends AppCompatActivity
                     LocationAddress locationAddress = new LocationAddress();
                     locationAddress.getAddressFromLocation(pinLatLng.latitude, pinLatLng.longitude,
                             getApplicationContext(), new GeocoderHandler());
-                    //db.addLocation(new StoredLocation(i,pinLatLng.latitude,pinLatLng.longitude, format));
 
-                    //Printing location info
-                    /*
-                    Log.d("Reading: ", "Reading all locations..");
-                    List<StoredLocation> locations = db.getAllLocations();
-
-                    for (StoredLocation location : locations) {
-                        String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                                + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
-                        // Writing locations to log
-                        Log.d("Location: : ", log);
-                    }
-                    */
                     //Storing data as KEY/VALUE pair in the device
                     editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
@@ -340,6 +329,8 @@ public class MainActivity extends AppCompatActivity
 
             // Restore Navigation
             pinLatLng = new LatLng(location.getLat(), location.getLng());
+            markedLat = location.getLat();
+            markedLon = location.getLng();
             currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
             // Restore Floor Number
             //currUserData.setUserFloorNumber(pref.getInt(FLOOR_SAVE, 0));
