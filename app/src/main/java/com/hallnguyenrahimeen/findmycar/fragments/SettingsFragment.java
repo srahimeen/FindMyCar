@@ -34,10 +34,7 @@ public class SettingsFragment extends Fragment {
         darkTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (darkTheme.isChecked())
-                    DARK_THEME = true;
-                else
-                    DARK_THEME = false;
+                DARK_THEME = darkTheme.isChecked();
             }
         });
 

@@ -40,10 +40,8 @@ import static com.hallnguyenrahimeen.findmycar.R.id.map;
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapClickListener, OnMapLongClickListener {
 
     private GoogleMap mGoogleMap;
-    private MapView mMapView;
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
     private Context mFragmentContext;
 
     public static Location pinLocation = null;
@@ -84,7 +82,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         super.onViewCreated(view, savedInstanceState);
 
         //Create map view and bind to layout
-        mMapView = (MapView) mView.findViewById(map);
+        MapView mMapView = (MapView) mView.findViewById(map);
         if(mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
@@ -138,7 +136,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onConnected(Bundle bundle) {
 
-        mLocationRequest = new LocationRequest();
+        LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -236,7 +234,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                     // Permission denied, Disable the functionality that depends on this permission.
                     Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other permissions this app might request.

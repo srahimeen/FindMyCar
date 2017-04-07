@@ -13,11 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Artur Hellmann on 10.05.16.
- *
- * This class is a compass helper. It provides data to rotate a view to point it to north in your UI.
- */
+// This class is a compass helper. It provides data to rotate a view to point it to north in your UI.
+
 public class CompassAssistant implements SensorEventListener {
 
     /**
@@ -51,14 +48,12 @@ public class CompassAssistant implements SensorEventListener {
         
     }
 
-    private Context context;
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
     private float[] lastAccelerometer = new float[3];
     private float[] lastMagnetometer = new float[3];
     private boolean lastAccelerometerSet = false;
-    private boolean lastMagnetometerSet = false;
     private float[] rotationMatrix = new float[9];
     private float[] orientation = new float[3];
     private float currentDegree = 0f;
@@ -87,8 +82,7 @@ public class CompassAssistant implements SensorEventListener {
      * @param context the context
      * @param l the location to which the CompassAssistant should refer its pointing.
      */
-    public CompassAssistant(final Context context, Location l) {
-        this.context = context;
+    private CompassAssistant(final Context context, Location l) {
 
         if (l != null) {
             GeomagneticField geomagneticField = new GeomagneticField((float)l.getLatitude(),
@@ -108,14 +102,6 @@ public class CompassAssistant implements SensorEventListener {
      */
     public void addListener(CompassAssistantListener listener) {
         this.listeners.add(listener);
-    }
-
-    /**
-     * Removes a listener from the listeners.
-     * @param listener the listener to remove.
-     */
-    public void removeListener(CompassAssistantListener listener) {
-        this.listeners.remove(listener);
     }
 
     /**
@@ -141,7 +127,6 @@ public class CompassAssistant implements SensorEventListener {
         this.lastAccelerometer = new float[3];
         this.lastMagnetometer = new float[3];
         this.lastAccelerometerSet = false;
-        this.lastMagnetometerSet = false;
         this.currentAccuracy = 0;
         this.currentDegree = 0f;
         this.currentSmoothedDegree = 0f;
@@ -169,7 +154,7 @@ public class CompassAssistant implements SensorEventListener {
      * @param level the level at which the compass needs to be calibrated. {@link android.hardware.SensorManager}
      * @return true, if the sensor needs to be calibrated.
      */
-    public boolean calibrationRequired(int level) {
+    private boolean calibrationRequired(int level) {
         return this.currentAccuracy <= level;
     }
 
@@ -181,11 +166,10 @@ public class CompassAssistant implements SensorEventListener {
             this.lastAccelerometerSet = true;
         } else if (event.sensor == this.magnetometer) {
             System.arraycopy(event.values, 0, this.lastMagnetometer, 0, event.values.length);
-            this.lastMagnetometerSet = true;
 
         }
 
-        if (this.lastAccelerometerSet && this.lastAccelerometerSet) {
+        if (this.lastAccelerometerSet) {
             SensorManager.getRotationMatrix(this.rotationMatrix,null, this.lastAccelerometer, this.lastMagnetometer);
             SensorManager.getOrientation(this.rotationMatrix, this.orientation);
 
@@ -275,11 +259,11 @@ public class CompassAssistant implements SensorEventListener {
      * @param smoothed whether the result should be smoothed or not.
      * @return the smoothed or not smoothed degrees including the current heading of the phone.
      */
-    public float getBearingBetweenLocations(double lat1,
-            double lng1, 
-            double lat2,
-            double lng2,
-            boolean smoothed) {
+    private float getBearingBetweenLocations(double lat1,
+                                             double lng1,
+                                             double lat2,
+                                             double lng2,
+                                             boolean smoothed) {
 
         double x = Math.cos(lat2) * Math.sin(lng1-lng2);
         double y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng1-lng2);

@@ -54,7 +54,6 @@ import com.hallnguyenrahimeen.findmycar.helpers.LocationAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.hallnguyenrahimeen.findmycar.R.style.AppTheme;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLat;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLon;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.pinLocation;
@@ -67,15 +66,12 @@ public class MainActivity extends AppCompatActivity
     //declared as global so we have access to it
     NavigationView navigationView = null;
     Toolbar toolbar = null;
-    private GoogleApiClient mGoogleApiClient; // TODO Delete?
     public static UserData currUserData;
-    public static UserData[] currUserDataArray = new UserData[50]; //used for multiple markers
 
     // Stores data to users device using SharedPreferences
     SharedPreferences pref;
     public static final String MYPREF = "MYPREF";
     public static final String PIN_SAVE = "PIN_SAVE";
-    public static final String FLOOR_SAVE = "FLOOR_SAVE";
 
     boolean pinnedCheck = false; // Stores a check if user leaves the app with the map PIN_SAVE
 
@@ -115,8 +111,7 @@ public class MainActivity extends AppCompatActivity
     //when the dialog is made, this method runs from the communicator interface
     @Override
     public void onDialogMessage(Integer floorNum) {
-         Integer floorNumber = floorNum; //get the floor number the user picks in the dialog
-        currUserData.setUserFloorNumber(floorNumber); //assign the floor number to currUserData
+        currUserData.setUserFloorNumber(floorNum); //assign the floor number to currUserData
         Log.d("floor number", currUserData.getUserFloorNumber().toString());
     }
 
@@ -208,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 
         // Changes theme to dark if checked in settings. Not fully working
         if (DARK_THEME) {
-            setTheme(R.style.ThemeOverlay_AppCompat_Dark);
+            setTheme(R.style.DarkTheme);
         }
 
 
@@ -282,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                         currUserData.setUserFloorNumber(pressureBasedFloor);
                     }
 
-                    editor.commit(); // Save the changes in SharedPreferences + commit changes
+                    editor.apply(); // Save the changes in SharedPreferences + commit changes
 
 
                 }

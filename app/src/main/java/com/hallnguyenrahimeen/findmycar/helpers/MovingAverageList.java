@@ -1,14 +1,11 @@
 package com.hallnguyenrahimeen.findmycar.helpers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-/**
- * Created by Artur Hellmann on 24.06.16.
- *
- * This class represents a moving average.
- */
-public class MovingAverageList extends ArrayList<Float> {
+
+// This class represents a moving average.
+
+class MovingAverageList extends ArrayList<Float> {
 
     /**
      * the amount of values maximal for this average list.
@@ -16,17 +13,10 @@ public class MovingAverageList extends ArrayList<Float> {
     private final int max;
 
     /**
-     * initializes the list with a default maximum of 10.
-     */
-    public MovingAverageList() {
-        this(10);
-    }
-
-    /**
      * initializes the list
      * @param max the maximum amount of values
      */
-    public MovingAverageList(int max) {
+    MovingAverageList(int max) {
         this.max = max;
     }
 
@@ -49,7 +39,7 @@ public class MovingAverageList extends ArrayList<Float> {
      * @param object the value to add
      * @return the average of the list.
      */
-    public Float addAndGetAverage(Float object) {
+    Float addAndGetAverage(Float object) {
         this.add(object);
         return this.getAverage();
     }
@@ -58,10 +48,9 @@ public class MovingAverageList extends ArrayList<Float> {
      * returns the average of the list
      * @return the average
      */
-    public Float getAverage() {
+    private Float getAverage() {
         Float sum = 0.0f;
-        for (Iterator<Float> it = this.iterator(); it.hasNext();) {
-            Float val = it.next();
+        for (Float val : this) {
             sum += val;
         }
         return sum / this.size();

@@ -8,8 +8,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -26,18 +24,15 @@ import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLat;
 import static com.hallnguyenrahimeen.findmycar.fragments.MainFragment.markedLon;
 
 
-/**
- * Created by tinnn on 3/29/2017.
- */
+
+// Created by Tin Nguyen on 3/29/2017.
+
 
 public class CompassFragmentActivity extends FragmentActivity implements SensorEventListener, com.hallnguyenrahimeen.findmycar.helpers.CompassAssistant.CompassAssistantListener {
     private CompassAssistant CompassAssistant;
     private float currentDegree;
 
-    private SensorManager sensorManager;
-    private Sensor compass;
     private ImageView image;
-    private TextView compassAngle; // May be used to display the degrees
     private TextView floorLevel;
 
     @Override
@@ -45,11 +40,10 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         image = (ImageView)findViewById(R.id.imageViewCompass);
-        compassAngle = (TextView)findViewById(R.id.angle);
         floorLevel = (TextView) findViewById(R.id.floorNum);
 
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        compass = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor compass = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         if(compass != null){
             sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -66,7 +60,15 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
 
         // Displays users floor number on compass navigation
         if (currUserData.getUserFloorNumber() != null) {
-            floorLevel.setText("Floor: " + currUserData.getUserFloorNumber());
+            if (currUserData.getUserFloorNumber() == 0) {
+                floorLevel.setText("");
+            } else if (currUserData.getUserFloorNumber() > 0) {
+                floorLevel.setText(R.string.floor);
+                floorLevel.append((currUserData.getUserFloorNumber().toString()));
+            }
+        }
+        else {
+            floorLevel.setText("");
         }
     }
     @Override
@@ -100,9 +102,8 @@ public class CompassFragmentActivity extends FragmentActivity implements SensorE
         });
 
        // Continuously finds the degree between user's current location which is last and destination which is marked.
-        float bearing = CompassAssistant.getBearingBetweenLocations(lastLat, lastLon, markedLat,markedLon);
 
-        currentDegree = bearing;
+        currentDegree = CompassAssistant.getBearingBetweenLocations(lastLat, lastLon, markedLat,markedLon);
         //currentDegree = degrees; For magnetic north
     }
 
