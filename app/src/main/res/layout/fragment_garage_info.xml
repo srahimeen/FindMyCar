@@ -19,28 +19,6 @@
             android:textStyle="bold"
             android:gravity="center"
             />
-        <!--
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location: 28.058695,-82.4171483"
-            android:textStyle="bold"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lot Capacity: 400 Cars, 15 Compact, 5 Electric, 12 Motorcycles"
-            android:textStyle="bold"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current Status: Busy"
-            android:textStyle="bold"
-            android:gravity="center" />
-        -->
     </LinearLayout><TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

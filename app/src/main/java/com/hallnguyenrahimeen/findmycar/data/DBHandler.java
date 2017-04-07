@@ -13,7 +13,7 @@ import java.util.SimpleTimeZone;
 
 public class DBHandler extends SQLiteOpenHelper {
     // Database Version, change this number to one greater if you update the table schema at all
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
     private static final String DATABASE_NAME = "carsInfo";
     // Contacts table name
@@ -31,8 +31,8 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_STORED_LOCATION + "("
-        + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LAT + " REAL,"
-        + KEY_LNG + " REAL," + KEY_TIME + " TEXT," + KEY_LOC + " TEXT)";
+        + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LAT + " TEXT,"
+        + KEY_LNG + " TEXT," + KEY_TIME + " TEXT," + KEY_LOC + " TEXT)";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
     @Override
@@ -42,18 +42,14 @@ public class DBHandler extends SQLiteOpenHelper {
         // Creating tables again
         onCreate(db);
     }
-    // Adding new shop
+    // Adding new location
     public void addLocation(StoredLocation location) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d("AddLat:::", Double.toString(location.getLat()));
-        Log.d("AddLng:::", Double.toString(location.getLng()));
         ContentValues values = new ContentValues();
-        values.put(KEY_LAT, location.getLat()); // location lat
-        values.put(KEY_LNG, location.getLng()); // location lng
+        values.put(KEY_LAT, Double.toString(location.getLat())); // location lat
+        values.put(KEY_LNG, Double.toString(location.getLng())); // location lng
         values.put(KEY_TIME, location.getTime()); // location time
         values.put(KEY_LOC, location.getLoc()); // location info
-        Log.d("AddLatAfter:::", Double.toString(values.getAsDouble(KEY_LAT)));
-        Log.d("AddLngAfter:::", Double.toString(values.getAsDouble(KEY_LNG)));
         // Inserting Row
         db.insert(TABLE_STORED_LOCATION, null, values);
         db.close(); // Closing database connection
@@ -81,25 +77,16 @@ public class DBHandler extends SQLiteOpenHelper {
         // SELECT max(id), lat, lng, time, location FROM storedLocation GROUP BY lat, lng, time, loc
         // Doesn't care if the car is parked or not, so you need to check that otherwise, this will
         // just return the most recent stored location (which will always have the highest ID)
-        /*
-        String selectQuery = "SELECT max("+ KEY_ID +"), " + KEY_LAT +", " + KEY_LNG + ", " + KEY_TIME
-                + ", " + KEY_LOC + " FROM " + TABLE_STORED_LOCATION + " GROUP BY " + KEY_LAT + ", "
-                + KEY_LNG + ", " + KEY_TIME + ", " + KEY_LOC;
-        */
         String selectQuery = "SELECT * FROM " + TABLE_STORED_LOCATION + " WHERE " + KEY_ID +
                 "=(SELECT max(" + KEY_ID + ") FROM " + TABLE_STORED_LOCATION + ")";
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
-
         // Create new location object to return, this is just a single line way of the default
         // constructor
-        Log.d("LAT:::",cursor.getString(1));
-        Log.d("LNG:::",cursor.getString(2));
         StoredLocation location = new StoredLocation(Integer.parseInt(cursor.getString(0)),
                 Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)),
                 cursor.getString(3), cursor.getString(4));

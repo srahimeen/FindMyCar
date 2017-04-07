@@ -3,35 +3,21 @@ package com.hallnguyenrahimeen.findmycar.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
 import com.hallnguyenrahimeen.findmycar.R;
 import com.hallnguyenrahimeen.findmycar.data.DBHandler;
 import com.hallnguyenrahimeen.findmycar.data.StoredLocation;
-
-import java.lang.ref.WeakReference;
 
 public class GarageInfoFragment extends Fragment {
     SharedPreferences pref;
     public static final String mypreference = "MYPREF";
     public static final String pinned = "PIN_SAVE";
-
-    private class ViewHolder {
-        TextView locLatText;
-        TextView locLngText;
-        TextView locTimeText;
-        TextView locLocText;
-        TextView garageText;
-    }
 
     public GarageInfoFragment() {
         // Required empty public constructor
@@ -53,21 +39,6 @@ public class GarageInfoFragment extends Fragment {
         activity = getActivity();
         locationHandler = new DBHandler(activity);
         pref = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        //Still working on trying to set info if car is parked
-        /*
-        if(pref.contains(PIN_SAVE)) {
-            if(pref.getBoolean(PIN_SAVE, false)) {
-                ViewHolder holder = new ViewHolder();
-                location = locationHandler.getMostRecentLocation();
-                Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
-                if(location != null){
-                    holder.garageText = (TextView) activity
-                            .findViewById(R.id.parked_details);
-                    //holder.garageText.setText(location.getLoc() + " " + location.getTime() + "");
-                }
-            }
-        }
-        */
     }
 
     @Override
@@ -80,22 +51,31 @@ public class GarageInfoFragment extends Fragment {
             if(pref.getBoolean(pinned, false)) {
                 //ViewHolder holder = new ViewHolder();
                 location = locationHandler.getMostRecentLocation();
-                Log.d("Stuff: ", location.getLoc() + " " + location.getTime() + " " + location.getLat() + " " + location.getLng());
                 if(location != null){
                     TextView t = (TextView) view.findViewById(R.id.parked_details);
-                    t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());
+                    Double lat = location.getLat();
+                    Double lng = location.getLng();
+                    String parkedText = location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat() + " \nLongitude: " + location.getLng();
+                    if(lat > 28.0582100 && lat < 28.0592500 && lng > -82.4176300 && lng < -82.4166100){
+                        parkedText += "\n\nGarage Info: Richard A. Beard Parking Garage\nPermits: S, R, GZ8, D";
+                    }
+                    else if(lat > 28.0611300 && lat < 28.0619800 && lng > -82.4127100 && lng < -82.4112400){
+                        parkedText += "\n\nGarage Info: Collins Blvd. Parking Facility\nPermits: GZ1, S";
+                    }
+                    else if(lat > 28.0646800 && lat < 28.0656250 && lng > -82.4124760 && lng < -82.4117400){
+                        parkedText += "\n\nGarage Info: Crescent Hill Parking Garage\nPermits: S, E, D";
+                    }
+                    else if(lat > 28.0663870 && lat < 28.0672650 && lng > -82.4189150 && lng < -82.4175740){
+                        parkedText += "\n\nGarage Info: Laurel Drive Parking Garage\nPermits: S, GZ42";
+                    }
+                    t.setText(parkedText);
                 }
             }
         }
         else{
-            Log.d("Stuff: ", "It didn't work, somebody messed it up");
+            //Nothin
         }
-
-
         findViewsById(view);
-
-        //task = new GetLocationTask(activity);
-        //task.execute((Void) null);
         return view;
     }
 
@@ -105,61 +85,8 @@ public class GarageInfoFragment extends Fragment {
 
     @Override
     public void onResume() {
-        /*
-        if(pref.contains(PIN_SAVE)) {
-            if(pref.getBoolean(PIN_SAVE, false)) {
-                //ViewHolder holder = new ViewHolder();
-                location = locationHandler.getMostRecentLocation();
-                Log.d("Stuff: ", location.getLoc() + " " + location.getTime());
-                if(location != null){
-                    TextView t = (TextView) view.findViewById(R.id.parked_details);
-                    t.setText(location.getLoc() + " \n" + location.getTime() + " \nLatitude: " + location.getLat()+ " \nLongitude: " + location.getLng());
-                }
-            }
-        }
-        */
-        //COME BACK TO THIS, IDK WHAT IT DOES BUT IT BROKE THE THING
-        //getActivity().setTitle(R.string.app_name);
-        //getActivity().getActionBar().setTitle(R.string.app_name);
         super.onResume();
     }
-    /*
-    public class GetLocationTask extends AsyncTask<Void, Void, StoredLocation> {
-
-        private final WeakReference<Activity> activityWeakRef;
-
-        public GetLocationTask(Activity context) {
-            this.activityWeakRef = new WeakReference<Activity>(context);
-        }
-
-        @Override
-        protected StoredLocation doInBackground(Void... arg0) {
-            StoredLocation locationList = locationHandler.getAllLocations();
-            return locationList;
-        }
-
-
-        @Override
-        protected void onPostExecute(StoredLocation locList) {
-            if (activityWeakRef.get() != null
-                    && !activityWeakRef.get().isFinishing()) {
-                Log.d("locations", locList.toString());
-                locations = locList;
-                if (locList != null) {
-                    if (locList.size() != 0) {
-                        listAdapter = new ListAdapter(activity,
-                                locList);
-                        locationListView.setAdapter(listAdapter);
-                    } else {
-                        Toast.makeText(activity, "No Recorded Locations",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-
-            }
-        }
-    }
-    */
 
     // This method is invoked from MainActivity onFinishDialog() method. It is
     //called from CustomEmpDialogFragment when an employee record is updated.

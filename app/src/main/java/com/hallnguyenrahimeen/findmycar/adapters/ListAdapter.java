@@ -63,35 +63,17 @@ public class ListAdapter extends ArrayAdapter<StoredLocation> {
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_item, null);
             holder = new ViewHolder();
-
-            /*
-            holder.locLatText = (TextView) convertView
-                    .findViewById(R.id.txt_loc_lat);
-            holder.locLngText = (TextView) convertView
-                    .findViewById(R.id.txt_loc_lng  );
-
-            holder.id = (TextView) convertView
-                    .findViewById(R.id.txt_id);
-            */
             holder.locLocText = (TextView) convertView
                     .findViewById(R.id.txt_loc_loc);
             holder.locTimeText = (TextView) convertView
                     .findViewById(R.id.txt_loc_time);
-
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        StoredLocation currLocation = (StoredLocation) getItem(position);
-        /*
-        holder.locLatText.setText(employee.getLat() + "");
-        holder.locLngText.setText(employee.getLng() + "");
-        */
-        //holder.id.setText(currLocation.getId() + "");
+        StoredLocation currLocation = getItem(position);
         holder.locLocText.setText(currLocation.getLoc() + "");
         holder.locTimeText.setText(currLocation.getTime() + "");
-
         return convertView;
     }
 

@@ -105,7 +105,6 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
         builder1.setMessage("Delete this location record?");
         builder1.setCancelable(true);
-
         builder1.setPositiveButton(
                 "Yes",
                 new DialogInterface.OnClickListener() {
@@ -115,7 +114,6 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
                         listAdapter.remove(location);
                     }
                 });
-
         builder1.setNegativeButton(
                 "No",
                 new DialogInterface.OnClickListener() {
@@ -123,11 +121,9 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
                         dialog.cancel();
                     }
                 });
-
         AlertDialog alert11 = builder1.create();
         alert11.show();
         // Use AsyncTask to delete from database
-
         return true;
     }
 
@@ -144,12 +140,10 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
             ArrayList<StoredLocation> locationList = locationHandler.getAllLocations();
             if(pref.contains(pinned)) {
                 if (pref.getBoolean(pinned, false)) {
-                    Log.d(":::PINNED IS TRUE:::","");
                     locationList = locationHandler.getAllButFirstLocations();
                 }
             }
             else{
-                Log.d(":::PINNED IS FALSE:::","");
                 locationList = locationHandler.getAllLocations();
             }
             return locationList;
@@ -186,32 +180,4 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         task.execute((Void) null);
     }
 }
-/* OLD STUFF, keeping just in case stuff doesn't work
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-
-
-//A simple {@link Fragment} subclass.
-
-
-public class HistoryFragment extends Fragment {
-
-
-    public HistoryFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false);
-    }
-
-}
-*/

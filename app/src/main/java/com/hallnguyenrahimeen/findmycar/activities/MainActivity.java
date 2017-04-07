@@ -215,6 +215,7 @@ public class MainActivity extends AppCompatActivity
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, hh:mm a");
         final String format = simpleDateFormat.format(new Date());
         final int i = 100;
+        //GeocoderHandler for setting the address of a given lat/long
         class GeocoderHandler extends Handler {
             @Override
             public void handleMessage(Message message) {
@@ -227,8 +228,6 @@ public class MainActivity extends AppCompatActivity
                         locationAddress = bundle.getString("address");
                         locationLat = bundle.getDouble("lat");
                         locationLng = bundle.getDouble("lng");
-                        Log.d("LAT::", Double.toString(locationLat));
-                        Log.d("LNG::", Double.toString(locationLng));
                         break;
                     default:
                         locationAddress = null;
@@ -238,9 +237,8 @@ public class MainActivity extends AppCompatActivity
 
                 currUserData.setUserLatLng(pinLatLng); //add PIN_SAVE latlang to UserData
                 pinnedCheck = true;
+                //Store the location in the database
                 StoredLocation newLoc = new StoredLocation(i, locationLat, locationLng, format, locationAddress);
-                Log.d("LAT::", Double.toString(newLoc.getLat()));
-                Log.d("LNG::", Double.toString(newLoc.getLng()));
                 db.addLocation(newLoc);
                         // new StoredLocation(i, locationLat, locationLng, format, locationAddress));
                         //tvAddress.setText(locationAddress);
@@ -269,18 +267,6 @@ public class MainActivity extends AppCompatActivity
                             getApplicationContext(), new GeocoderHandler());
                     //db.addLocation(new StoredLocation(i,pinLatLng.latitude,pinLatLng.longitude, format));
 
-                    //Printing location info
-                    /*
-                    Log.d("Reading: ", "Reading all locations..");
-                    List<StoredLocation> locations = db.getAllLocations();
-
-                    for (StoredLocation location : locations) {
-                        String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                                + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();
-                        // Writing locations to log
-                        Log.d("Location: : ", log);
-                    }
-                    */
                     //Storing data as KEY/VALUE pair in the device
                     editor.putBoolean(PIN_SAVE, true);
                     pinnedCheck = true;
@@ -328,25 +314,9 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
-        // Printing all locations
-        /*
-        Log.d("Reading: ", "Reading all shops..");
-        List<StoredLocation> locations = db.getAllLocations();
-
-        for (StoredLocation location : locations) {
-            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                    + location.getLng() + " ,Time: " + location.getTime();
-            // Writing locations to log
-            Log.d("Location: : ", log);
-        }
-        */
-
         // Checks if a pin has already been placed previously and restores navigation view
         if (pinnedCheck) {
             fab.setImageResource(R.drawable.ic_fabreturn);
-            Log.d("Pinned WAS CHECKED: ", "YES");
             StoredLocation location = db.getMostRecentLocation();
             String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
                     + location.getLng() + " ,Time: " + location.getTime() + " ,Loc: " + location.getLoc();

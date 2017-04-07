@@ -7,10 +7,6 @@ import android.hardware.SensorManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Soufin Rahimeen on 3/25/2017.
- */
-
 public class UserData {
 
     private LatLng userLatLng;
