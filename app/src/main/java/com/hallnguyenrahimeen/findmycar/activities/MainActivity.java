@@ -328,21 +328,6 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
-        // Printing all locations
-        /*
-        Log.d("Reading: ", "Reading all shops..");
-        List<StoredLocation> locations = db.getAllLocations();
-
-        for (StoredLocation location : locations) {
-            String log = "Id: " + location.getId() + " ,Lat: " + location.getLat() + " ,Lng: "
-                    + location.getLng() + " ,Time: " + location.getTime();
-            // Writing locations to log
-            Log.d("Location: : ", log);
-        }
-        */
-
         // Checks if a pin has already been placed previously and restores navigation view
         if (pinnedCheck) {
             fab.setImageResource(R.drawable.ic_fabreturn);
