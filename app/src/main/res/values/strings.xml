@@ -6,8 +6,6 @@
 
     <string name="action_info">Information</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_first_section">Internal</string>
     <string name="checktitle1">Offline Storage</string>
     <string name="default_checkbox_preference">false</string>
@@ -24,7 +22,7 @@
     <string name="exitMessage">Are you sure you want to exit?</string>
     <string name="compassMessage">Compass navigation has started pointing to pinned location.</string>
     <string name="gpsOff">The GPS is not yet available.</string>
-    <string name="floor">Floor:</string>
+    <string name="floor">Floor: </string>
     <string name="exitCompass">Exit Compass Navigation?</string>
     <string name="exitCompasssInfo">Once exited the pin will be removed from the map, are you sure?</string>
     <string name="destination">Destination:</string>
