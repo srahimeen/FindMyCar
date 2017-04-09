@@ -38,6 +38,10 @@ Get the location from a given latitude and longitude using reverse geocaching an
 #### MovingAverageList: 
 Gets the moving average as the phone updates the different sensors.
 
+### Ignored Files
+
+secret_keys.xml: Required to store values of all API and secret keys used by the application
+
 
 ## Contributing
 1. Fork it!
