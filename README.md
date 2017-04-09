@@ -47,7 +47,8 @@ Gets the moving average as the phone updates the different sensors.
 5. Submit a pull request :D
 
 ## Credits
-Original Developers: Soufin Rahimeen, Aaron Hall, Tin Nguyen
+#### Original Developers: 
+Soufin Rahimeen, Aaron Hall, Tin Nguyen
 
 ## License
 MIT License
