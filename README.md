@@ -1,5 +1,5 @@
 # FindMyCar
-Exactly what it’s named; an app that helps you find your car! Wherever you're parked, this app will help youn find your way back to it.
+Exactly what it’s named; an app that helps you find your car! Wherever you're parked, this app will help you find your way back to it.
 
 ## Screenshots
 
