@@ -29,9 +29,9 @@ This displays detailed information about the parking garage/pinned location.
 #### SettingsFragment: 
 Allows user to make changes to how the application functions. 
 
-### Utility Classes
+### Data Classes
 
-#### CompassAssistant: This class is a compass helper. It provides data to rotate a view to point it to north in the compass UI.
+#### User Data: Creates an object to contail all relevant user data, such as location values and sensor readings.
 
 ### Utility Classes
 
