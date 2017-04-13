@@ -31,7 +31,8 @@ Allows user to make changes to how the application functions.
 
 ### Data Classes
 
-#### User Data: Creates an object to contail all relevant user data, such as location values and sensor readings.
+#### User Data: 
+Creates an object to contail all relevant user data, such as location values and sensor readings.
 
 ### Utility Classes
 
